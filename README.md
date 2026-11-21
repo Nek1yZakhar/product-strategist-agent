@@ -39,7 +39,7 @@ flowchart TD
 
 ### Шаг 1. Клонирование и настройка окружения
 ```bash
-git clone https://github.com/nek1y/product-strategist-agent.git
+git clone https://github.com/Nek1yZakhar/product-strategist-agent.git
 cd product-strategist-agent
 cp .env.example .env
 ```
@@ -88,15 +88,15 @@ python scripts/teamwork_runner.py --validate-all
 
 ## 5. Эталонный демонстрационный кейс («МегаФон Семья»)
 
-В папке `knowledge/projects/demo-megafon/` сформирован полный сквозной кейс:
-- `brief.md` & `data/baseline-metrics.md`: Каноническая таблица базовых метрик (отставание плана 4 000 факт против 5 000 план, целевые 8 000/12 000, 100K домохозяйств, 40K мульти-SIM, +500 ₽ маржи за доп. месяц удержания).
-- `findings/`: 5 верифицированных фактологических файлов с подтвержденными ссылками.
-- `output/options.md`: 3 варианта (Status Quo, Shutdown, Value Pivot) с сильными контраргументами.
-- `output/adversarial-review.md`: Жесткая рецензия Red-Team GLM 5.3 с выявлением рисков маржинальных утечек на IoT и каннибализации.
-- `output/product-strategy.md`: Продуктовая стратегия с картой JTBD и осознанными отказами.
-- `output/communication-strategy.md`: Коммуникационная стратегия с ключевым сообщением по стандарту `sasha`.
-- `output/validation-plan.md`: План пилотной валидации на 60 дней с защитой от каннибализации.
-- `output/ux-journey.md`: Анализ интерфейсов и устранение барьера потери 42% конверсии.
+В папке `knowledge/projects/demo-megafon/` сформирован полный сквозной кейс, синхронизированный с 11-страничным конкурсным первоисточником `Пример брифа.pdf`:
+- `brief.md` & `data/baseline-metrics.md`: Каноническая таблица базовых метрик (базовый год 275 млн ₽ оценка / 282 млн ₽ план, плановый год 279 млн ₽ без изменений / 285 млн ₽ цель, дельта +6 млн ₽ = 12 000 доп. месяцев по 500 ₽, 100K домохозяйств, 40K мульти-SIM, лимит 3 чел.-мес. разработки на Q2).
+- `findings/`: 5 верифицированных фактологических файлов с подтвержденными ссылками (100% verified, arXiv:2504.00317).
+- `output/options.md`: 4-вариантная матрица (Вариант А: «Упреждающий сигнал / Lightweight Core», Вариант B: «Полномасштабный семейный хаб», Вариант C: «Status Quo», Вариант D: «Shutdown») со строгими steelman-контраргументами.
+- `output/adversarial-review.md`: Жесткая рецензия Red-Team GLM 5.3 с нейтрализацией рисков спама пушами (троттлинг 1 пуш на событие) и защитой приватности (152-ФЗ).
+- `output/product-strategy.md`: 5-секционная продуктовая стратегия по структуре брифа (разбор перебоя связи за 45 мин., роли Организатора/Участника/Плательщика, упреждающий push, снижение блокировок с 12% до 9%, окупаемость за 5.5 месяцев, 3-летний горизонт — 24 000 групп).
+- `output/communication-strategy.md`: Коммуникационная стратегия с ключевым сообщением по стандарту `sasha` без скрытых звездочек.
+- `output/validation-plan.md`: Контролируемый A/B пилот в Q2 на 2 000 групп со стратификацией и жесткими критериями Kill Switch (утечки согласий, двойные списания).
+- `output/ux-journey.md`: Анализ интерфейсов и устранение барьера потери 42% конверсии через изолированные согласия.
 - `state/decision-journal.md`: Запись решения `DEC-2026-MF-01` с фиксацией Захара как владельца.
 
 ---
@@ -115,8 +115,8 @@ product-strategist-agent/
 │   ├── methodology/               # Стандарты доказательств, шаблоны стратегий, red-team промпты
 │   └── projects/demo-megafon/     # Демо-проект «МегаФон Семья» (бриф, данные, находки, стратегии)
 ├── state/                         # STATE-current-task.md, decision-journal.md, cost-log.csv
-├── scripts/                       # verify_citations.py, extract_brief.py, cost_summary.py
-├── docs/                          # ARCHITECTURE.md, STATE.md, CONTEXT.md, SUBMISSION.md, source/
+├── scripts/                       # verify_citations.py, extract_brief.py, cost_summary.py, teamwork_runner.py, generate_submission_pdf.py
+├── docs/                          # ARCHITECTURE.md, STATE.md, CONTEXT.md, SUBMISSION.md, specs/ (11 тикетов), specs/TRACEABILITY.md, source/
 └── demo/                          # RUNBOOK.md, VIDEO-PLAN.md, session_transcript.jsonl
 ```
 
