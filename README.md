@@ -56,6 +56,9 @@ python scripts/verify_citations.py --project demo-megafon --update
 
 # 3. Формирование прозрачного финансового отчета по токенам и затратам
 python scripts/cost_summary.py
+
+# 4. Валидация DAG-зависимостей и локальный запуск мульти-агентных тикетов (Team Work)
+python scripts/teamwork_runner.py --validate-all
 ```
 
 ### Шаг 3. Запуск агента в IDE

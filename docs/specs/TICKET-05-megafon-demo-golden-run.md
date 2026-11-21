@@ -1,50 +1,112 @@
-# TICKET-05: Сквозной демонстрационный кейс МегаФона (Golden Run)
+# TICKET-05: Демонстрационный кейс Фабрики продуктов МегаФона (Golden Run)
 
-## Цель (Goal)
-Сформировать достоверный сквозной кейс на базе официального брифа МегаФона («Семейная связь»), демонстрирующий полный цикл разработки стратегии от проблемной постановки до утвержденного решения.
+## 1. Контекст, проблема и инварианты (Context, Problem & Invariants)
 
-## Проблема (Problem)
-Стратегический агент без законченного демонстрационного кейса не может доказать экспертному жюри свою практическую применимость и соответствие заявленным конкурсным критериям.
+### 1.1. Контекст и бизнес-проблема
+На Фабрике продуктов МегаФона развивается направление объединения номеров семьи и персональных IoT-устройств с общим балансом и пакетами трафика («МегаФон Семья»). Фактический объем активных семейных групп составляет **4 000 групп** при плановом значении **5 000 групп** (отставание на 20%). Годовой KPI команды продукта требует достижения **8 000 активных** и **12 000 подключенных групп**. Текущая валовая прибыль колеблется на уровне **282 $\to$ 285 млн ₽**. Задача агента — сформировать математически обоснованную, защищенную от рисков стратегию преодоления разрыва и масштабирования сервиса.
 
-## Границы скоупа (Scope)
-- **MUST (Обязательно)**:
-  - `knowledge/projects/demo-megafon/brief.md`: структурированное описание проблемы.
-  - `data/baseline-metrics.md`: официальная 5-строчная таблица базовых метрик (валовая прибыль 282 $\to$ 285 млн ₽, 4k факт vs 5k план, 8k/12k цель, 100k домохозяйств, 40k мульти-SIM, +500 ₽/мес маржа удержания).
-  - `findings/*.md`: $\ge 5$ верифицированных фактологических файлов с YAML-шапкой и действующими ссылками.
-  - `output/options.md`: триада вариантов (Status Quo, Shutdown, Value Pivot) с сильными контраргументами.
-  - `output/adversarial-review.md`: отчет Red-Team GLM 5.3 с анализом утечек на IoT и каннибализации VIP-тарифов.
-  - `output/product-strategy.md`: Продуктовая стратегия с картой JTBD и осознанными отказами.
-  - `output/communication-strategy.md`: Коммуникационная стратегия с ключевым сообщением по стандарту `sasha`.
-  - `output/validation-plan.md`: 60-дневный план эмпирической валидации с порогами фальсификации.
-  - `output/ux-journey.md`: анализ пользовательского пути и ликвидация отвала 42% на SMS-онбординге.
-  - `state/decision-journal.md`: протокол решения `DEC-2026-MF-01`.
-- **SHOULD (Желательно)**:
-  - Качественный гайд для реальных интервью в `interview-guide.md`.
-- **COULD (Возможно)**:
-  - Сравнительная таблица тарифов конкурентов (МТС, билайн, Т2).
+### 1.2. Архитектурные инварианты
+- **Immutable Baseline Numbers Invariant**:
+  - Емкость домохозяйств пилотного макрорегиона: **100 000**.
+  - База владельцев мульти-SIM МегаФона: **40 000 абонентов**.
+  - Юнит-экономический якорь: каждый дополнительный месяц удержания группы генерирует **+500 ₽ чистой валовой прибыли**.
+  - Целевой прирост валовой прибыли: не менее **+20 млн ₽**.
+- **No-Price-Dumping Invariant**: Запрещен лобовой ценовой демпинг (раздача бесплатных SIM без привязки к LTV).
+- **Zero-Mock Policy**: Все выводы должны базироваться на реальных проверенных источниках телеком-рынка РФ.
 
-## Требования (Requirements)
-1. Базовые метрики обязаны строго соответствовать официальным вводным из брифа МегаФона.
-2. Все внешние ссылки обязаны возвращать HTTP 200 при проверке `scripts/verify_citations.py`.
-3. Замечания Red-Team обязаны быть явно отработаны и зафиксированы в финальной стратегии.
-4. Обещания в коммуникационной стратегии обязаны строго опираться на фактические возможности продукта.
+---
 
-## Заметки по реализации (Implementation Notes)
-- Каталог проекта: `knowledge/projects/demo-megafon/`.
-- Документы для продакта оформлены на русском языке в лаконичном деловом стиле (`sasha`).
+## 2. Архитектура и топология Team Work (Team Work Topology & Roles)
 
-## Критерии приемки ("Done when")
-- Все файлы в каталоге `output/` проекта существуют и полностью заполнены.
-- Команда `python scripts/verify_citations.py --project demo-megafon` фиксирует 0 битых и 0 вымышленных ссылок.
-- В `state/decision-journal.md` внесена запись `DEC-2026-MF-01`, где владельцем указан Захар.
+### 2.1. Ролевая матрица субагентов
+Сквозной прогон демо-кейса выполняется мульти-агентным ансамблем:
 
-## Источники и литература (References)
-- https://arxiv.org/abs/2608.24306 — «Who is the Agent to Blame?»: обоснование изоляции находок против ошибок оркестратора.
-- https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus — Структурирование контекста проекта.
+```mermaid
+flowchart TD
+    Coord["Coordinator (Оркестратор)<br/>Контроль этапов Golden Run"] --> Res["Evidence Agent (Сборщик фактов)<br/>5 находок с URL в findings/"]
+    Coord --> Strat["Strategist Agent (Синтезатор)<br/>brief, options, strategies, validation, ux"]
+    Coord --> Red["Red-Team Critic (GLM 5.3)<br/>Стресс-тест в output/adversarial-review.md"]
+    Coord --> QA["QA Auditor (Верификатор)<br/>Аудит цифр: 285M, 4k->8k, +500R"]
+    Res -.-> Strat
+    Strat -.-> Red
+    Red -.-> Strat
+    Strat -.-> QA
+```
 
-## Зависимости (Dependencies)
-TICKET-02, TICKET-03, TICKET-04.
+| Роль агента | Тип субагента | Зона ответственности | Входные данные | Выходные артефакты | Шаговый бюджет |
+| :--- | :--- | :--- | :--- | :--- | :---: |
+| **Coordinator** | `strategist` / `self` | Управление сквозным прогоном Фаз 1–6, контроль фазовых переходов. | `docs/source/demo_brief_ru.md` | `state/STATE-current-task.md` | $\le 5$ шагов |
+| **Evidence Agent** | `researcher` / `self` | Сбор 5 верифицированных находок по телеком-рынку РФ и барьерам UX. | Поисковые запросы, `verify_citations.py` | `findings/01-05*.md` | $\le 10$ шагов |
+| **Strategist Agent** | `coder` / `self` | Синтез продуктовой и коммуникационной стратегий, плана валидации, UX. | `data/baseline-metrics.md`, findings | `output/*.md` | $\le 12$ шагов |
+| **Red-Team Critic** | `red_team` / Zcode GLM 5.3 | Независимый аудит рисков каннибализации и скрытых затрат на IoT. | `output/options.md` | `output/adversarial-review.md` | $\le 8$ шагов |
+| **QA Auditor** | `verifier` / `self` | Криминалистическая сверка финансовой математики и согласованности метрик. | Все файлы проекта | Сводка валидации | $\le 5$ шагов |
 
-## Трудоемкость и риски (Effort & Risks)
-- **Трудоемкость**: 3.0 человеко-часа (MUST-скоуп).
-- **Риск**: Оторванные от жизни финансовые фантазии. *Митигация*: Жесткая привязка расчетов к экономическому якорю +500 ₽/мес за удержание группы.
+### 2.2. Изоляция файловых границ (File Boundary Isolation)
+- **Evidence Agent**: Запись строго в `knowledge/projects/demo-megafon/findings/`.
+- **Strategist Agent**: Запись строго в `knowledge/projects/demo-megafon/output/` и `brief.md`.
+- **Red-Team Critic**: Запись строго в `knowledge/projects/demo-megafon/output/adversarial-review.md`.
+- **QA Auditor**: Read-Only аудит всех выходных файлов.
+
+### 2.3. Директива запуска субагентов (Invoke Subagent Directive)
+```text
+Execute deep Golden Run synthesis for Megafon Product Factory.
+Strictly anchor all strategic and financial arguments to baseline metrics:
+Current: 4,000 groups, 285M RUB. Target: 8,000 active, +500 RUB retention LTV.
+Ensure options triad is fully elaborated and adversarial objections are resolved.
+Conclude cleanly once all deliverables in knowledge/projects/demo-megafon/ are complete.
+```
+
+---
+
+## 3. Детерминированные контракты реализации (Implementation Contracts)
+
+### 3.1. Структура артефактов `knowledge/projects/demo-megafon/`
+1. `data/baseline-metrics.md`: Эталонные 5 строк базовых метрик Фабрики продуктов.
+2. `brief.md`: Нормализованный бриф проекта, извлеченный из `demo_brief_ru.md`.
+3. `findings/`:
+   - `01-russian-telecom-family-penetration.md`: Проникновение семейных тарифов в РФ (35% домохозяйств).
+   - `02-multi-sim-smart-device-growth.md`: Рост носимых устройств и детских часов (+28% год к году).
+   - `03-competitor-family-tariff-mechanics.md`: Механики конкурентов (МТС Мы МТС, Билайн Семья, T2).
+   - `04-parental-security-jtbd.md`: JTBD родительского контроля и защиты от спама (ВЦИОМ).
+   - `05-onboarding-friction-and-ux-bottlenecks.md`: UX-барьеры подтверждения через SMS (потеря 42% на шаге 2).
+4. `output/`:
+   - `options.md`: Триада вариантов (Status Quo, Shutdown, Value Pivot «МегаФон Семья 2.0: Защита & Мульти-Устройства»).
+   - `adversarial-review.md`: Рецензия Red-Team (GLM 5.3) с защитными контрмерами (плата за умные часы 99 ₽/мес, минимальный порог ARPA 1 650 ₽).
+   - `product-strategy.md`: Детальная продуктовая стратегия с юнит-экономикой ($+20$ млн ₽ чистой валовой прибыли).
+   - `communication-strategy.md`: Коммуникационная стратегия по стандарту `sasha` («Спокойствие и цифровая защита для всей семьи»).
+   - `validation-plan.md`: 60-дневный пилотный план проверки рискованных гипотез.
+   - `ux-journey.md`: Оптимизация пути пользователя: ликвидация SMS-барьера онбординга.
+
+---
+
+## 4. Криминалистический чеклист приемки (Forensic Acceptance Checklist)
+
+### 4.1. Автоматизированные тесты
+```powershell
+# 1. Проверка наличия всех 5 находок и их верификация
+python scripts/verify_citations.py --project demo-megafon
+
+# 2. Проверка существования всех ключевых артефактов Golden Run
+$artifacts = @(
+    "knowledge/projects/demo-megafon/brief.md",
+    "knowledge/projects/demo-megafon/data/baseline-metrics.md",
+    "knowledge/projects/demo-megafon/output/options.md",
+    "knowledge/projects/demo-megafon/output/adversarial-review.md",
+    "knowledge/projects/demo-megafon/output/product-strategy.md",
+    "knowledge/projects/demo-megafon/output/communication-strategy.md",
+    "knowledge/projects/demo-megafon/output/validation-plan.md",
+    "knowledge/projects/demo-megafon/output/ux-journey.md"
+)
+foreach ($a in $artifacts) {
+    if (-not (Test-Path $a)) { throw "Missing Golden Run artifact: $a" }
+}
+
+# 3. Тест раннера Team Work для TICKET-05
+python scripts/teamwork_runner.py --ticket TICKET-05 --mode live
+```
+
+### 4.2. Критерии готовности ("Done When")
+- [x] Все 8 ключевых артефактов присутствуют в `knowledge/projects/demo-megafon/`.
+- [x] Все 5 ссылок в `findings/*.md` возвращают статус `verified` (HTTP 200).
+- [x] Финансовые параметры согласованы во всех стратегических документах ($285$ млн ₽, $4\,000 \to 8\,000$ групп, $+500$ ₽/мес, $+20$ млн ₽ валовой прибыли).
+- [x] Тест раннера `teamwork_runner.py` для TICKET-05 завершается с кодом 0.

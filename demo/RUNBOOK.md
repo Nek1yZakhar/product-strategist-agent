@@ -7,9 +7,10 @@
 ## Подготовительный этап (0:00 – 1:00)
 
 1. Откройте терминал в корне репозитория `product-strategist-agent/`.
-2. Проверьте готовность Python-окружения:
+2. Проверьте готовность Python-окружения и мульти-агентного раннера:
    ```bash
    python scripts/cost_summary.py
+   python scripts/teamwork_runner.py --validate-all
    ```
 3. Откройте проект в **AntiGravity IDE** или **Cursor**.
 4. Убедитесь, что открыт файл `AGENTS.md` и `docs/STATE.md`.

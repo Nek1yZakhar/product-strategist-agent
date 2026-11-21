@@ -38,6 +38,7 @@
 | **Поддержка принятия решений** | Протоколирование решений в журнале с владельцами, метриками и условиями пересмотра. | `TICKET-03`<br/>`TICKET-05` | `state/decision-journal.md`<br/>(Запись `DEC-2026-MF-01`) |
 | **Актуализация при новых данных** | Автоматическое отслеживание затронутых выводов стратегии при поступлении свежих рыночных вводных. | `TICKET-03` | `skill:revision-scanner`<br/>`.agents/rules/knowledge.md` |
 | **Маршрутизация и Red-Team** | Основной стратег в AntiGravity (Gemini Flash), независимый Red-Team критик в Zcode (GLM 5.3), копайлот Perplexity. | `TICKET-09` | `docs/ARCHITECTURE.md`<br/>`output/adversarial-review.md` |
+| **Мульти-агентный Team Work** | Двухконтурное параллельное исполнение: IDE Teamwork (/teamwork, /swarm) + локальный asyncio раннер без тяжелых фреймворков. | `TICKET-04`<br/>`TICKET-11` | `scripts/teamwork_runner.py`<br/>`tests/test_teamwork_runner.py` |
 | **Сценарный движок видео** | Посекундный план 10-минутного ролика и эталонный лог сессии для терминальных реплеев. | `TICKET-10` | `demo/VIDEO-PLAN.md`<br/>`demo/session_transcript.jsonl` |
 | **Портативность без фреймворков** | Чистый репозиторный агент без демонов, совместимый с AntiGravity, Cursor, Claude Code, Zcode. | `TICKET-01`<br/>`TICKET-11` | `AGENTS.md`<br/>`README.md` |
 

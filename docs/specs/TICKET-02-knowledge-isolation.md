@@ -1,48 +1,109 @@
 # TICKET-02: 4-слойная изоляция знаний и стандарты методологии
 
-## Цель (Goal)
-Обеспечить строгое разделение постоянных инструкций, стратегической методологии, материалов конкретного проекта и текущего состояния задачи для предотвращения когнитивного смешения контекстов.
+## 1. Контекст, проблема и инварианты (Context, Problem & Invariants)
 
-## Проблема (Problem)
-Обычные диалоговые ассистенты перезаписывают общую методологию данными текущего проекта либо теряют базовые правила во время длинных диалогов, что приводит к дрейфу контекста и нестабильным выводам.
+### 1.1. Контекст и бизнес-проблема
+В мульти-агентных аналитических системах возникает риск взаимного загрязнения памяти: субагенты могут перезаписывать общую методологию данными текущего проекта либо применять специфические предположения одного клиента ко всей системе. Для обеспечения научной строгости и воспроизводимости стратегий необходима строгая 4-слойная изоляция файлового пространства репозитория:
+1. **Слой 1 (Система & Правила)**: `AGENTS.md`, `.agents/rules/`, `.agents/skills/`.
+2. **Слой 2 (Методология & Стандарты)**: `knowledge/methodology/` (фреймворки, стандарты доказательств, шаблоны).
+3. **Слой 3 (Экземпляры проектов & Факты)**: `knowledge/projects/<project>/` (брифы, findings, options, стратегии).
+4. **Слой 4 (Состояние исполнения & Логи)**: `state/` (возобновление сессии, журнал решений, учет токенов).
 
-## Границы скоупа (Scope)
-- **MUST (Обязательно)**:
-  - Дерево каталогов: `knowledge/methodology/` и `knowledge/projects/`.
-  - `knowledge/methodology/evidence-standards.md` с описанием таксономии «Факт — Гипотеза — Допущение».
-  - `knowledge/methodology/strategy-frameworks.md`, стандартизирующий Продуктовую стратегию, Коммуникационную стратегию и Триаду вариантов.
-  - `knowledge/methodology/synthetic-respondents.md`, задающий жесткие ограничения на использование синтетических персон.
-  - Шаблоны документов в `knowledge/methodology/templates/` (`product-strategy.md`, `communication-strategy.md`, `validation-plan.md`).
-  - Шаблон Red-Team промпта в `knowledge/methodology/red-team/adversarial-review-prompt.md`.
-- **SHOULD (Желательно)**:
-  - Регламент явного отзыва (retraction) устаревших находок.
-- **COULD (Возможно)**:
-  - Автоматический линтер корректности заполнения шаблонов.
+### 1.2. Архитектурные инварианты
+- **Ground Truth Invariant**: Папка `docs/source/` содержит эталонные брифы и задание конкурса (`task_ru.md`, `demo_brief_ru.md`) — запись в нее строго запрещена (Read-Only).
+- **Epistemic Classification Invariant**: Любое утверждение в слое 3 обязано иметь строгую эпистемическую маркировку (`[FACT]`, `[HYPOTHESIS]`, `[ASSUMPTION]`) с верифицированным URL-источником.
+- **Synthetic Honesty Invariant**: Синтетические респонденты запрещены для оценки платежеспособного спроса и WTP (arXiv:2507.04438).
+- **Zero-Mock Policy**: Все шаблоны методологии должны содержать реальные рабочие разделы и формулы без пустых заглушек.
 
-## Требования (Requirements)
-1. Постоянные системные инструкции ни при каких условиях не должны записываться в `knowledge/projects/`.
-2. Все фактологические утверждения обязаны оформляться по схеме YAML frontmatter (`claim`, `source_url`, `verified`, `confidence`, `date_checked`).
-3. Синтетические респонденты обязаны маркироваться строго как инструмент качественной генерации гипотез (arXiv:2607.26348).
-4. Исходные файлы задания в `docs/source/` являются неизменяемым Ground Truth.
+---
 
-## Заметки по реализации (Implementation Notes)
-- Файлы методологии размещаются в `knowledge/methodology/`.
-- Экземпляры проектов изолируются в `knowledge/projects/<project-name>/`.
-- Шаблоны обеспечивают готовую структуру для навыка `strategy-writer`.
+## 2. Архитектура и топология Team Work (Team Work Topology & Roles)
 
-## Критерии приемки ("Done when")
-- Все файлы в `knowledge/methodology/` существуют и содержат проверенные шаблоны.
-- Проверка текста `evidence-standards.md` подтверждает наличие ссылок на arXiv:2504.00317, arXiv:2608.24306 и arXiv:2607.26348.
-- Шаблоны в `templates/` корректно отображаются без синтаксических ошибок разметки.
+### 2.1. Ролевая матрица субагентов
 
-## Источники и литература (References)
-- https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus — Организация знаний и контекстный инжиниринг на базе файлов.
-- https://gist.github.com/renschni/4fbc70b31bad8dd57f3370239dccd58f — Архитектурный разбор Manus: управление памятью и извлечение знаний.
-- https://arxiv.org/abs/2607.26348 — «When Synthetic Users Fail»: обоснование стандарта честности синтетических респондентов.
+```mermaid
+flowchart TD
+    Coord["Coordinator (Оркестратор)<br/>Контроль слоев и прав доступа"] --> Res["Researcher-Methodologist<br/>Стандарты доказательств и arXiv"]
+    Coord --> Eng["Engineer-Templates<br/>Шаблоны стратегий и Red-Team"]
+    Coord --> QA["QA Auditor (Верификатор)<br/>Аудит изоляции и YAML-схем"]
+    Res -.->|"Методологические регламенты"| QA
+    Eng -.->|"Шаблоны в methodology/templates/"| QA
+```
 
-## Зависимости (Dependencies)
-TICKET-01 (Базовый каркас).
+| Роль агента | Тип субагента | Зона ответственности | Входные данные | Выходные артефакты | Шаговый бюджет |
+| :--- | :--- | :--- | :--- | :--- | :---: |
+| **Coordinator** | `strategist` / `self` | Валидация 4-слойной структуры папок, маршрутизация задач. | `docs/ARCHITECTURE.md` | `docs/STATE.md` | $\le 5$ шагов |
+| **Researcher-Methodologist** | `researcher` / `self` | Формирование `evidence-standards.md`, `strategy-frameworks.md`, `synthetic-respondents.md`. | Научные публикации (arXiv:2504.00317, arXiv:2507.04438) | `knowledge/methodology/*.md` | $\le 10$ шагов |
+| **Engineer-Templates** | `coder` / `self` | Создание эталонных шаблонов в `knowledge/methodology/templates/` и `red-team/`. | Фреймворки стратегий | `templates/*.md`, `red-team-prompt.md` | $\le 8$ шагов |
+| **QA Auditor** | `verifier` / `self` | Проверка отсутствия проектных данных в слое 2 и валидность YAML. | Сгенерированные файлы | Отчет о целостности слоев | $\le 5$ шагов |
 
-## Трудоемкость и риски (Effort & Risks)
-- **Трудоемкость**: 2.0 человеко-часа (MUST-скоуп).
-- **Риск**: Избыточное усложнение заголовков шаблонов. *Митигация*: Использование стандартного Markdown с компактными YAML-блоками.
+### 2.2. Изоляция файловых границ (File Boundary Isolation)
+- **Зона записи Researcher-Methodologist**: `knowledge/methodology/*.md`.
+- **Зона записи Engineer-Templates**: `knowledge/methodology/templates/`, `knowledge/methodology/red-team/`.
+- **Защищенная зона**: `knowledge/projects/` не должна затрагиваться при выполнении этого тикета.
+
+### 2.3. Директива запуска субагентов (Invoke Subagent Directive)
+```text
+Execute rigorous methodology authoring and knowledge layer separation.
+Ensure evidence standards incorporate arXiv:2504.00317 (URL hallucinations) and arXiv:2507.04438 (synthetic bias).
+Strictly isolate methodology templates from project-specific telecom data.
+Conclude cleanly once all methodology documents and templates are verified.
+```
+
+---
+
+## 3. Детерминированные контракты реализации (Implementation Contracts)
+
+### 3.1. Спецификация `knowledge/methodology/evidence-standards.md`
+- Эпистемическая шкала:
+  - `[FACT]`: Подтверждено официальным источником, протоколом испытаний или HTTP 200 ссылкой.
+  - `[HYPOTHESIS]`: Логическое предположение, требующее проверки сплит-тестом или глубинным интервью.
+  - `[ASSUMPTION]`: Входное допущение для финансовой модели с указанием диапазона чувствительности.
+- YAML frontmatter контракт:
+  ```yaml
+  ---
+  claim: "Формулировка проверенного факта"
+  source_url: "https://..."
+  verified: "verified | dead | hallucinated"
+  confidence: "fact | hypothesis | assumption"
+  date_checked: "YYYY-MM-DD"
+  author: "Организация / автор исследования"
+  data_period: "Год / квартал данных"
+  ---
+  ```
+
+### 3.2. Спецификация шаблонов в `knowledge/methodology/templates/`
+- `product-strategy.md`: Executive Summary, JTBD & сегменты, Value Proposition, Стратегические развилки, Юнит-экономика ($+500$ ₽ LTV), Осознанные отказы.
+- `communication-strategy.md`: Ключевое сообщение по `sasha`, Барьеры восприятия, Матрица каналов, Инвариант честности обещаний.
+- `validation-plan.md`: Гипотезы риска, Метрики пилота, Критерии отката и масштабирования.
+
+---
+
+## 4. Криминалистический чеклист приемки (Forensic Acceptance Checklist)
+
+### 4.1. Автоматизированные тесты
+```powershell
+# 1. Проверка существования файлов методологии
+$files = @(
+    "knowledge/methodology/evidence-standards.md",
+    "knowledge/methodology/strategy-frameworks.md",
+    "knowledge/methodology/synthetic-respondents.md"
+)
+foreach ($f in $files) {
+    if (-not (Test-Path $f)) { throw "Missing methodology file: $f" }
+}
+
+# 2. Проверка наличия научных ссылок в стандартах доказательств
+$evText = Get-Content "knowledge/methodology/evidence-standards.md" -Raw
+assert ($evText.Contains("arXiv:2504.00317")) "Missing arXiv:2504.00317 reference"
+assert ($evText.Contains("arXiv:2507.04438")) "Missing arXiv:2507.04438 reference"
+
+# 3. Тест раннера Team Work
+python scripts/teamwork_runner.py --ticket TICKET-02 --mode live
+```
+
+### 4.2. Критерии готовности ("Done When")
+- [x] Все ключевые файлы методологии и шаблоны созданы в `knowledge/methodology/`.
+- [x] Стандарты доказательств содержат обязательную схему YAML frontmatter.
+- [x] Синтетические персоны регламентированы запретом на подмену живых опросов.
+- [x] Тест раннера `teamwork_runner.py` для TICKET-02 завершается с кодом 0.

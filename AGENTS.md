@@ -13,6 +13,7 @@ A repository-based AI agent for digital product and communication strategy (MGIM
 - `python scripts/extract_brief.py [pdf_or_text]` — Extract & normalize incoming product briefs.
 - `python scripts/verify_citations.py` — Resolve per-claim URLs, detect dead links & hallucinations.
 - `python scripts/cost_summary.py` — Aggregate financial token expenditure and compute model costs.
+- `python scripts/teamwork_runner.py` — Autonomous multi-agent task runner and DAG validator.
 
 ## Environment Variables (.env.example)
 - `GEMINI_API_KEY`: Optional Google AI Studio Free-Tier key for standalone Python CLI scripts.
