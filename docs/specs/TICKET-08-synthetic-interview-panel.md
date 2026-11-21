@@ -1,45 +1,45 @@
-# TICKET-08: Synthetic Interview Panel with Mandatory Honesty Labeling
+# TICKET-08: Панель синтетических респондентов с честной маркировкой
 
-## Goal
-Implement exploratory user research personas while strictly enforcing scientific honesty guardrails that prevent treating synthetic LLM outputs as empirical demand evidence.
+## Цель (Goal)
+Реализовать инструмент генерации качественных пользовательских гипотез с соблюдением принципа научной честности: жестким запретом выдавать ответы симулированных персон за реальный рыночный спрос.
 
-## Problem
-AI products frequently present simulated LLM user interviews as proof of market demand, despite scientific proof that LLMs exhibit extreme compliance bias and fail to simulate true price sensitivity (arXiv:2607.26348, Verasight 2026).
+## Проблема (Problem)
+Многие ИИ-решения выдают интервью с нейросетевыми персонажами за подтверждение платежеспособного спроса, вопреки научным доказательствам того, что LLM страдают конформизмом и не способны моделировать реальные финансовые ограничения (arXiv:2607.26348, Verasight 2026).
 
-## Scope
-- **MUST**:
-  - Methodology guidelines in `knowledge/methodology/synthetic-respondents.md`.
-  - Operational skill `.agents/skills/interview-panel/SKILL.md`.
-  - Mandatory prominent disclaimer banner on all persona outputs:
-    `[METHODOLOGICAL DISCLAIMER: Synthetic simulation for hypothesis generation ONLY; NOT empirical demand evidence (arXiv:2607.26348)]`.
-  - Real customer qualitative interview guide generation based on uncovered blind spots.
-- **SHOULD**:
-  - Demographic archetype diversity (e.g., Head of Household, Digital Native Teen, Elderly Relative).
-- **COULD**:
-  - Pew Research "silicon samples" digital twin framing for persona calibration.
+## Границы скоупа (Scope)
+- **MUST (Обязательно)**:
+  - Методологический регламент в `knowledge/methodology/synthetic-respondents.md`.
+  - Операционный навык `.agents/skills/interview-panel/SKILL.md`.
+  - Обязательный баннер-дисклеймер в начале каждого документа с персонами:
+    `[МЕТОДОЛОГИЧЕСКИЙ ДИСКЛЕЙМЕР: Синтетическая симуляция ИСКЛЮЧИТЕЛЬНО для поиска гипотез; НЕ является доказательством спроса (arXiv:2607.26348)]`.
+  - Разработка качественного сценария интервью с реальными пользователями на основе найденных зон сомнений.
+- **SHOULD (Желательно)**:
+  - Разнообразие архетипов (Глава семьи, Ребенок-подросток, Пожилой родственник).
+- **COULD (Возможно)**:
+  - Методология «кремниевых выборок» (silicon samples) Pew Research для калибровки персон.
 
-## Requirements
-1. Synthetic personas must never generate quantitative demand forecasts or willingness-to-pay (WTP) figures.
-2. Every synthetic interview file must begin with the verbatim disclaimer banner.
-3. Personas must focus on uncovering latent anxiety, privacy friction, and onboarding objections.
+## Требования (Requirements)
+1. Синтетические персоны категорически запрещено использовать для численной оценки объема рынка или готовности платить (WTP).
+2. Каждый документ с диалогами персон обязан начинаться с обязательного предупреждения.
+3. Фокус синтетических интервью — выявление скрытых психологических барьеров, страхов за приватность и неудобств интерфейса.
 
-## Implementation Notes
-- Governed by `.agents/rules/evidence.md`.
-- Executed via `skill:interview-panel`.
+## Заметки по реализации (Implementation Notes)
+- Регулируется правилом `.agents/rules/evidence.md`.
+- Исполняется через навык `skill:interview-panel`.
 
-## Acceptance Criteria ("Done when")
-- `knowledge/methodology/synthetic-respondents.md` contains strict permitted vs. prohibited use cases.
-- Generated persona documents contain the verbatim disclaimer banner in line 1.
-- No synthetic persona file contains simulated quantitative market sizing or WTP numbers.
+## Критерии приемки ("Done when")
+- В `knowledge/methodology/synthetic-respondents.md` зафиксированы допустимые и запрещенные сценарии.
+- Сгенерированные файлы с персонами содержат обязательный дисклеймер в первой строке.
+- В материалах отсутствуют псевдо-статистические расчеты долей рынка на базе ответов LLM.
 
-## References
-- https://arxiv.org/abs/2607.26348 — Chen, Zhu, Zheng (2026), "When Synthetic Users Fail": Benchmark proving LLM agents fail at individual consumer modeling and inflate segment gaps.
-- https://www.verasight.io/reports/synthetic-polls-vs-real-surveys-2026-midterms — Verasight 2026: Out-of-sample test showing synthetic polls missed by RMSE 8.3 pp.
-- https://www.pewresearch.org/data-labs/2026/09/30/methodology-silicon-samples/ — Pew Research: Methodologically honest silicon samples standards.
+## Источники и литература (References)
+- https://arxiv.org/abs/2607.26348 — Chen, Zhu, Zheng (2026), «When Synthetic Users Fail»: доказательство неспособности LLM моделировать индивидуальный потребительский выбор.
+- https://www.verasight.io/reports/synthetic-polls-vs-real-surveys-2026-midterms — Verasight 2026: ошибка синтетических опросов составила RMSE 8.3 п.п.
+- https://www.pewresearch.org/data-labs/2026/09/30/methodology-silicon-samples/ — Стандарты методологически честных выборок Pew Research.
 
-## Dependencies
+## Зависимости (Dependencies)
 TICKET-02, TICKET-03.
 
-## Effort & Risks
-- **Effort**: 1.5 person-hours (MUST scope).
-- **Risk**: Stakeholders misinterpreting persona dialogue as validated customer demand. *Mitigation*: Uncompromising prominent warning banner.
+## Трудоемкость и риски (Effort & Risks)
+- **Трудоемкость**: 1.5 человеко-часа (MUST-скоуп).
+- **Риск**: Неверное истолкование выводов пользователями как доказанного факта. *Митигация*: Неустранимый предупреждающий баннер.

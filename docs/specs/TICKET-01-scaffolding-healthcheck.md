@@ -1,45 +1,45 @@
-# TICKET-01: Core Repository Scaffolding, Governance Passport & Healthcheck
+# TICKET-01: Базовый каркас репозитория, паспорт управления и аудит здоровья
 
-## Goal
-Establish a clean, lean repository-as-agent topology that runs natively inside agentic IDEs without external daemon runtimes.
+## Цель (Goal)
+Создать чистую, легковесную топологию «репозитория как агента» (Repo-Agent), нативно функционирующую внутри агентских IDE без использования внешних фоновых демонов.
 
-## Problem
-Without an explicit domain passport and governance foundation, agent sessions hallucinate project boundaries, duplicate system rules, or attempt to launch heavy background daemons that break IDE workflows.
+## Проблема (Problem)
+Без явного паспорта домена и базовых правил агентские сессии теряют контекст, галлюцинируют границы проекта, дублируют глобальные системные правила или пытаются запускать тяжелые фоновые службы, ломающие рабочий процесс в IDE.
 
-## Scope
-- **MUST**:
-  - Root `AGENTS.md` (Domain Passport, 25–40 lines) defining model allocation, CLI tooling, environment variables, and pointers.
-  - Core rules engine in `.agents/rules/` (`workflow.md`, `evidence.md`, `knowledge.md`, `cost.md`, `research.md`, `deliverables.md`).
-  - `.env.example` with safe placeholder configuration.
-  - `.gitignore` protecting secrets, Python bytecache, and IDE temporary files.
-- **SHOULD**:
-  - Automated directory sanity check command in Python.
-- **COULD**:
-  - Pre-commit hook for secret scanning.
+## Границы скоупа (Scope)
+- **MUST (Обязательно)**:
+  - Корневой `AGENTS.md` (Паспорт домена, 25–40 строк), определяющий матрицу моделей, CLI-утилиты, переменные окружения и указатели.
+  - Движок правил в `.agents/rules/` (`workflow.md`, `evidence.md`, `knowledge.md`, `cost.md`, `research.md`, `deliverables.md`).
+  - `.env.example` с безопасной конфигурацией-заглушкой.
+  - `.gitignore`, защищающий секреты, кэш Python и временные файлы IDE.
+- **SHOULD (Желательно)**:
+  - Автоматическая команда проверки целостности структуры папок на Python.
+- **COULD (Возможно)**:
+  - Pre-commit хук для сканирования случайных утечек секретов.
 
-## Requirements
-1. `AGENTS.md` must not exceed 40 lines and must contain no duplicate global system invariants.
-2. `.agents/rules/` must contain 6 distinct markdown rules enforcing workflow, evidence, knowledge isolation, cost accounting, research discipline, and competition deliverables.
-3. Git repository must ignore `.env` and Python cache files.
-4. All instructions and rules must be written in English for high-density reasoning.
+## Требования (Requirements)
+1. `AGENTS.md` не должен превышать 40 строк и не должен дублировать глобальные инварианты системы.
+2. Папка `.agents/rules/` должна содержать 6 отдельных правил в формате Markdown, регламентирующих воркфлоу, стандарты доказательств, изоляцию знаний, учет затрат, дисциплину исследований и соответствие конкурсному ТЗ.
+3. Git-репозиторий обязан игнорировать `.env` и скомпилированные файлы Python.
+4. Внутренние системные инструкции выдерживаются в четком инженерном стиле.
 
-## Implementation Notes
-- Files created: `AGENTS.md`, `.env.example`, `.gitignore`, `.agents/rules/*.md`.
-- Architecture reference: Follows the "folder agent" pattern where the workspace directory itself represents the agent.
+## Заметки по реализации (Implementation Notes)
+- Созданные файлы: `AGENTS.md`, `.env.example`, `.gitignore`, `.agents/rules/*.md`.
+- Архитектурный паттерн: «папка как агент», где рабочая директория сама по себе задает поведение и границы агента.
 
-## Acceptance Criteria ("Done when")
-- `Test-Path AGENTS.md` returns True.
-- Line count of `AGENTS.md` is between 25 and 40 lines.
-- All 6 rule files exist in `.agents/rules/`.
-- Git status confirms `.env` is ignored when created.
+## Критерии приемки ("Done when")
+- Проверка `Test-Path AGENTS.md` возвращает True.
+- Объем `AGENTS.md` составляет от 25 до 40 строк.
+- Все 6 файлов правил присутствуют в `.agents/rules/`.
+- Статус Git подтверждает игнорирование `.env` при его создании.
 
-## References
-- https://code.claude.com/docs/en/best-practices — Best practices for agent rules vs skills vs hooks and task-tracking discipline.
-- https://www.reddit.com/r/ClaudeAI/comments/1q403xw/ — Claude Code as an office automation platform: validating folder-agent design.
+## Источники и литература (References)
+- https://code.claude.com/docs/en/best-practices — Лучшие практики разделения правил, навыков и хуков, дисциплина отслеживания задач.
+- https://www.reddit.com/r/ClaudeAI/comments/1q403xw/ — Использование агентских IDE как платформ автоматизации: валидация паттерна «папка-агент».
 
-## Dependencies
-None (Root bootstrap ticket).
+## Зависимости (Dependencies)
+Отсутствуют (базовый корневой тикет).
 
-## Effort & Risks
-- **Effort**: 1.5 person-hours (MUST scope).
-- **Risk**: Rule bloat degrading context window. *Mitigation*: Progressive disclosure; keep rules concise ($\le 8\text{ KB}$).
+## Трудоемкость и риски (Effort & Risks)
+- **Трудоемкость**: 1.5 человеко-часа (MUST-скоуп).
+- **Риск**: Разрастание объема правил, перегружающее контекст модели. *Митигация*: Прогрессивное раскрытие; правила лаконичны ($\le 8\text{ КБ}$).

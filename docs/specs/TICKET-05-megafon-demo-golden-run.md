@@ -1,50 +1,50 @@
-# TICKET-05: Megafon Demo Project Golden Run
+# TICKET-05: Сквозной демонстрационный кейс МегаФона (Golden Run)
 
-## Goal
-Deliver an authentic, end-to-end case study on the official Megafon "Family Connectivity" brief, demonstrating the full strategic cycle from problem statement to ratified decision.
+## Цель (Goal)
+Сформировать достоверный сквозной кейс на базе официального брифа МегаФона («Семейная связь»), демонстрирующий полный цикл разработки стратегии от проблемной постановки до утвержденного решения.
 
-## Problem
-A strategic agent without a fully worked, verified demonstration project cannot prove its real-world viability to competition evaluators or demonstrate compliance with scoring rubrics.
+## Проблема (Problem)
+Стратегический агент без законченного демонстрационного кейса не может доказать экспертному жюри свою практическую применимость и соответствие заявленным конкурсным критериям.
 
-## Scope
-- **MUST**:
-  - `knowledge/projects/demo-megafon/brief.md`: Normalized problem statement.
-  - `knowledge/projects/demo-megafon/data/baseline-metrics.md`: Official 5-row metrics table (Gross profit 282->285M ₽, 4k vs 5k active groups, 8k/12k targets, 100k households, 40k multi-SIM, +500 ₽ margin/month).
-  - `findings/*.md`: $\ge 5$ verified research findings with YAML frontmatter and live URLs.
-  - `output/options.md`: Strategic triad (Status Quo, Shutdown, Value Pivot) with steelman counterarguments.
-  - `output/adversarial-review.md`: Red-Team critique from GLM 5.3 / Zcode addressing IoT margin leakage and cannibalization.
-  - `output/product-strategy.md`: Full Product Strategy with JTBD and conscious refusals.
-  - `output/communication-strategy.md`: Communication Strategy with single-minded message (`sasha` standard).
-  - `output/validation-plan.md`: 60-day empirical validation plan with falsification thresholds.
-  - `output/ux-journey.md`: Grounded UI/UX journey analysis eliminating the 42% onboarding drop-off.
-  - `state/decision-journal.md`: Logged decision record `DEC-2026-MF-01`.
-- **SHOULD**:
-  - Customer interview guide in `knowledge/projects/demo-megafon/interview-guide.md`.
-- **COULD**:
-  - Competitor feature comparison matrix in tabular format.
+## Границы скоупа (Scope)
+- **MUST (Обязательно)**:
+  - `knowledge/projects/demo-megafon/brief.md`: структурированное описание проблемы.
+  - `data/baseline-metrics.md`: официальная 5-строчная таблица базовых метрик (валовая прибыль 282 $\to$ 285 млн ₽, 4k факт vs 5k план, 8k/12k цель, 100k домохозяйств, 40k мульти-SIM, +500 ₽/мес маржа удержания).
+  - `findings/*.md`: $\ge 5$ верифицированных фактологических файлов с YAML-шапкой и действующими ссылками.
+  - `output/options.md`: триада вариантов (Status Quo, Shutdown, Value Pivot) с сильными контраргументами.
+  - `output/adversarial-review.md`: отчет Red-Team GLM 5.3 с анализом утечек на IoT и каннибализации VIP-тарифов.
+  - `output/product-strategy.md`: Продуктовая стратегия с картой JTBD и осознанными отказами.
+  - `output/communication-strategy.md`: Коммуникационная стратегия с ключевым сообщением по стандарту `sasha`.
+  - `output/validation-plan.md`: 60-дневный план эмпирической валидации с порогами фальсификации.
+  - `output/ux-journey.md`: анализ пользовательского пути и ликвидация отвала 42% на SMS-онбординге.
+  - `state/decision-journal.md`: протокол решения `DEC-2026-MF-01`.
+- **SHOULD (Желательно)**:
+  - Качественный гайд для реальных интервью в `interview-guide.md`.
+- **COULD (Возможно)**:
+  - Сравнительная таблица тарифов конкурентов (МТС, билайн, Т2).
 
-## Requirements
-1. Baseline metrics must strictly match ground truth provided in the contest brief.
-2. Every external finding must pass `python scripts/verify_citations.py` with HTTP 200.
-3. Red-Team critique must be formally acknowledged and incorporated into the final strategy.
-4. Promotional claims in the Communication Strategy must strictly match actual technical capabilities.
+## Требования (Requirements)
+1. Базовые метрики обязаны строго соответствовать официальным вводным из брифа МегаФона.
+2. Все внешние ссылки обязаны возвращать HTTP 200 при проверке `scripts/verify_citations.py`.
+3. Замечания Red-Team обязаны быть явно отработаны и зафиксированы в финальной стратегии.
+4. Обещания в коммуникационной стратегии обязаны строго опираться на фактические возможности продукта.
 
-## Implementation Notes
-- Directory: `knowledge/projects/demo-megafon/`.
-- Written in Russian for client copy and strategy deliverables, complying with `sasha` communication standards.
+## Заметки по реализации (Implementation Notes)
+- Каталог проекта: `knowledge/projects/demo-megafon/`.
+- Документы для продакта оформлены на русском языке в лаконичном деловом стиле (`sasha`).
 
-## Acceptance Criteria ("Done when")
-- All files in `knowledge/projects/demo-megafon/output/` exist and are populated.
-- `python scripts/verify_citations.py --project demo-megafon` returns 0 dead and 0 hallucinated links.
-- `state/decision-journal.md` contains record `DEC-2026-MF-01` with Zakhar designated as owner.
+## Критерии приемки ("Done when")
+- Все файлы в каталоге `output/` проекта существуют и полностью заполнены.
+- Команда `python scripts/verify_citations.py --project demo-megafon` фиксирует 0 битых и 0 вымышленных ссылок.
+- В `state/decision-journal.md` внесена запись `DEC-2026-MF-01`, где владельцем указан Захар.
 
-## References
-- https://arxiv.org/abs/2608.24306 — "Who is the Agent to Blame?": Motivates isolating findings to prevent orchestrator error cascades.
-- https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus — Context structuring across project materials.
+## Источники и литература (References)
+- https://arxiv.org/abs/2608.24306 — «Who is the Agent to Blame?»: обоснование изоляции находок против ошибок оркестратора.
+- https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus — Структурирование контекста проекта.
 
-## Dependencies
+## Зависимости (Dependencies)
 TICKET-02, TICKET-03, TICKET-04.
 
-## Effort & Risks
-- **Effort**: 3.0 person-hours (MUST scope).
-- **Risk**: Over-optimistic financial projections. *Mitigation*: Anchor calculations strictly to the +500 ₽ retention margin formula.
+## Трудоемкость и риски (Effort & Risks)
+- **Трудоемкость**: 3.0 человеко-часа (MUST-скоуп).
+- **Риск**: Оторванные от жизни финансовые фантазии. *Митигация*: Жесткая привязка расчетов к экономическому якорю +500 ₽/мес за удержание группы.

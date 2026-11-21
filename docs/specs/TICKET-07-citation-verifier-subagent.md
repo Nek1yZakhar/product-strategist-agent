@@ -1,43 +1,43 @@
-# TICKET-07: Anti-Hallucination & Citation Verification Subagent
+# TICKET-07: Субагент верификации ссылок и защита от галлюцинаций URL
 
-## Goal
-Eliminate fabricated URLs and phantom citations from strategic research reports through deterministic HTTP resolution and automated claim quarantining.
+## Цель (Goal)
+Исключить вымышленные ссылки и «фантомные цитирования» из стратегических материалов через детерминированную сетевую проверку и автоматический карантин недостоверных находок.
 
-## Problem
-Empirical benchmarks show 3–13% of URLs in AI research reports are hallucinations (arXiv:2504.00317; arXiv:2607.00738). Relying on dead or fabricated links destroys credibility in competition evaluation.
+## Проблема (Problem)
+Академические тесты фиксируют от 3% до 13% галлюцинированных ссылок в отчетах ИИ (arXiv:2504.00317, arXiv:2607.00738). Использование несуществующих ссылок уничтожает доверие экспертов и снижает баллы на защите.
 
-## Scope
-- **MUST**:
-  - Deterministic URL resolver (`scripts/verify_citations.py`) executing HTTP HEAD/GET probes.
-  - Classification engine: `verified` (HTTP 200/WAF), `dead` (HTTP 404/DNS failure), `hallucinated` (dummy/synthetic domains).
-  - Quarantine protocol: Any finding not marked `verified` is blocked from informing strategic options.
-  - Audit table generation formatted in GitHub-flavored markdown.
-- **SHOULD**:
-  - `--update` flag to rewrite YAML frontmatter automatically in `findings/*.md`.
-- **COULD**:
-  - Extraction and fuzzy-matching of page titles to detect domain parking pages.
+## Границы скоупа (Scope)
+- **MUST (Обязательно)**:
+  - Детерминированный скрипт-валидатор (`scripts/verify_citations.py`), выполняющий сетевые запросы HTTP HEAD/GET.
+  - Классификатор статусов: `verified` (HTTP 200 или WAF-защита), `dead` (HTTP 404 / сбой DNS), `hallucinated` (вымышленные/тестовые домены).
+  - Протокол карантина: любая находка со статусом, отличным от `verified`, блокируется для использования в стратегиях.
+  - Формирование отчета в виде Markdown-таблицы с HTTP-кодами и пояснениями.
+- **SHOULD (Желательно)**:
+  - Флаг `--update` для автоматического обновления поля `verified` в заголовках файлов `findings/*.md`.
+- **COULD (Возможно)**:
+  - Сравнение заголовка страницы с темой находки для отсева сайтов-дорвеев.
 
-## Requirements
-1. Verification must execute via standard Python libraries without external API keys.
-2. Detection heuristics must catch common synthetic domains (`example.com`, `fake.org`, `test.local`).
-3. Results must be documented in a publication-grade markdown table with HTTP status codes and diagnostic notes.
+## Требования (Requirements)
+1. Верификация обязана работать автономно через стандартные библиотеки Python без платных API.
+2. Эвристика обязана отлавливать распространенные тестовые заглушки (`example.com`, `fake.org`, `test.local`).
+3. Результаты аудита выводятся в аккуратной табличной форме.
 
-## Implementation Notes
-- Core script: `scripts/verify_citations.py`.
-- Integrates with `skill:citation-verifier`.
+## Заметки по реализации (Implementation Notes)
+- Реализация: `scripts/verify_citations.py`.
+- Интеграция с агентским навыком `skill:citation-verifier`.
 
-## Acceptance Criteria ("Done when")
-- `python scripts/verify_citations.py --project demo-megafon` audits all project findings.
-- Synthetic dummy URL passed via `--url https://example.com/fake` returns status `hallucinated`.
-- Active domain passed via `--url https://habr.com` returns status `verified`.
+## Критерии приемки ("Done when")
+- Запуск `python scripts/verify_citations.py --project demo-megafon` успешно проверяет все источники проекта.
+- Проверка вымышленной ссылки через `--url https://example.com/fake` возвращает статус `hallucinated`.
+- Проверка активного домена через `--url https://habr.com` возвращает статус `verified`.
 
-## References
-- https://arxiv.org/abs/2607.00738 — "Phantom References": Hallucinated citations surviving peer review and agent evaluation.
-- https://arxiv.org/abs/2608.24306 — "Who is the Agent to Blame?": Error propagation from orchestrator evidence collection.
+## Источники и литература (References)
+- https://arxiv.org/abs/2607.00738 — «Phantom References»: исследование вымышленных цитирований, переживающих рецензирование.
+- https://arxiv.org/abs/2608.24306 — «Who is the Agent to Blame?»: каскадное распространение ошибок при сборе фактов.
 
-## Dependencies
-TICKET-04 (CLI Tooling).
+## Зависимости (Dependencies)
+TICKET-04 (CLI-скрипты).
 
-## Effort & Risks
-- **Effort**: 2.0 person-hours (MUST scope).
-- **Risk**: Corporate firewalls or bot protections returning HTTP 403. *Mitigation*: Code treats HTTP 403 on valid registered domains as `verified (Domain active / WAF protected)` to prevent false alarms.
+## Трудоемкость и риски (Effort & Risks)
+- **Трудоемкость**: 2.0 человеко-часа (MUST-скоуп).
+- **Риск**: Ошибочная блокировка сайтов с защитой от ботов (код 403). *Митигация*: Код трактует HTTP 403 на существующих доменах как `verified (WAF Protected)`.

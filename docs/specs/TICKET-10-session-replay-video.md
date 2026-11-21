@@ -1,50 +1,50 @@
-# TICKET-10: Session Replay & 10-Minute Video Script Engine
+# TICKET-10: Запись сессий и 10-минутный сценарий демонстрационного видео
 
-## Goal
-Deliver a complete demonstration package including an end-to-end scenario runbook, reference session transcript, and second-by-second video screenplay mapped to the 10-minute contest limit.
+## Цель (Goal)
+Подготовить полный демонстрационный комплект: пошаговый сценарий (Runbook), эталонный лог сессии и посекундный план видеоролика, строго укладывающийся в 10-минутный лимит конкурса.
 
-## Problem
-Competition entries often lose points on implementation and presentation quality due to disorganized demo videos that exceed time limits, skip critical requirements, or rely on slow live API calls that bore evaluators.
+## Проблема (Problem)
+Проекты часто теряют баллы за реализацию из-за хаотичных видеозаписей, превышающих регламент, пропускающих ключевые требования или зависающих в ожидании ответов сети.
 
-## Scope
-- **MUST**:
-  - `demo/RUNBOOK.md`: Step-by-step walkthrough covering the 6 phases from vague request to resumed session.
-  - `demo/VIDEO-PLAN.md`: Second-by-second screenplay (00:00 to 09:50) with Russian voiceover script and visual focus cues covering all 4 contest criteria.
-  - `demo/session_transcript.jsonl`: Reference session recording formatted for terminal replay utilities.
-- **SHOULD**:
-  - Paced replay timing configuration to simulate real-time agent typing without dead air.
-- **COULD**:
-  - Asciinema `.cast` recording file for embedding interactive terminal replays.
+## Границы скоупа (Scope)
+- **MUST (Обязательно)**:
+  - `demo/RUNBOOK.md`: пошаговый сценарий сквозной демонстрации 6 фаз от нечеткого запроса до возобновления сессии.
+  - `demo/VIDEO-PLAN.md`: посекундный план ролика (00:00 – 09:50) с русскоязычным закадровым текстом Захара и фокусом на 4 критерия оценки.
+  - `demo/session_transcript.jsonl`: эталонный лог диалога для инструментов воспроизведения сессий.
+- **SHOULD (Желательно)**:
+  - Пейсинг воспроизведения без пауз для динамичного показа в видео.
+- **COULD (Возможно)**:
+  - Файл терминальной записи asciinema (`.cast`) для интерактивного просмотра в терминале.
 
-## Requirements
-1. Total video screenplay runtime must strictly not exceed 10 minutes (600 seconds).
-2. The script must explicitly cover:
-   - Initial vague request and intake clarification.
-   - Evidence gathering and deterministic URL verification.
-   - Options formulation (including Status Quo and Shutdown).
-   - Adversarial Red-Team audit by GLM 5.3.
-   - Product Strategy, Communication Strategy, and Validation Plan.
-   - Simulated break and session resumption in a fresh chat window.
-   - Final cost accounting report.
-3. Voiceover copy must be written in professional Russian (`sasha` standard).
+## Требования (Requirements)
+1. Хронометраж сценария обязан строго укладываться в лимит до 10 минут (600 секунд).
+2. Сценарий обязан последовательно раскрывать:
+   - Нечеткий бриф и уточняющий опрос ($\le 2$ вопросов).
+   - Сбор доказательств и сетевую проверку ссылок на отсутствие галлюцинаций.
+   - Триаду вариантов (включая Status Quo и Shutdown).
+   - Red-Team аудит на базе GLM 5.3 в Zcode.
+   - Продуктовую стратегию, коммуникационную стратегию и план валидации.
+   - Разрыв сессии и быстрое возобновление в новом чате.
+   - Финальный отчет по стоимости и затраченным токенам.
+3. Текст озвучки оформлен на чистом русском языке по стандарту `sasha`.
 
-## Implementation Notes
-- Files reside in `demo/`.
-- Designed for compatibility with `BenLirio/claude-session-replay` and `es617/claude-replay`.
+## Заметки по реализации (Implementation Notes)
+- Файлы размещаются в каталоге `demo/`.
+- Совместимо с инструментами `BenLirio/claude-session-replay` и `es617/claude-replay`.
 
-## Acceptance Criteria ("Done when")
-- `demo/RUNBOOK.md` provides clear copy-paste commands for every phase.
-- `demo/VIDEO-PLAN.md` has timestamps from 00:00 to 09:50 without gaps.
-- `demo/session_transcript.jsonl` exists and is valid JSONL.
+## Критерии приемки ("Done when")
+- `demo/RUNBOOK.md` содержит четкие готовые команды для каждой фазы.
+- `demo/VIDEO-PLAN.md` содержит непрерывную посекундную раскадровку от 00:00 до 09:50.
+- `demo/session_transcript.jsonl` существует и представляет собой валидный JSONL.
 
-## References
-- https://github.com/BenLirio/claude-session-replay — Pure-Python session JSONL to self-contained HTML replay.
-- https://github.com/es617/claude-replay — Paced multi-IDE replay tool.
-- https://asciinema.org/ and https://github.com/asciinema/asciinema — Asciinema headless recording standard.
+## Источники и литература (References)
+- https://github.com/BenLirio/claude-session-replay — Воспроизведение логов сессии в HTML-терминале на чистом Python.
+- https://github.com/es617/claude-replay — Инструмент воспроизведения сессий для различных агентских IDE.
+- https://asciinema.org/ — Стандарт терминальной видеозаписи asciinema.
 
-## Dependencies
-TICKET-05 (Demo Case Study), TICKET-06 (Session Resumability).
+## Зависимости (Dependencies)
+TICKET-05 (Демо-кейс), TICKET-06 (Возобновляемость).
 
-## Effort & Risks
-- **Effort**: 2.0 person-hours (MUST scope).
-- **Risk**: Video running over the 10-minute contest limit. *Mitigation*: Script time-boxed to 09:50 with 10-second safety buffer.
+## Трудоемкость и риски (Effort & Risks)
+- **Трудоемкость**: 2.0 человеко-часа (MUST-скоуп).
+- **Риск**: Выход за пределы 10 минут при живой записи. *Митигация*: Тайм-бокс сценария ограничен 09:50 с запасом 10 секунд.

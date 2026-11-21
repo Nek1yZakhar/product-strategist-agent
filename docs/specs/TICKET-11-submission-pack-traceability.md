@@ -1,43 +1,43 @@
-# TICKET-11: Competition Submission Pack & Traceability Matrix
+# TICKET-11: Конкурсный пакет сдачи и матрица трассируемости
 
-## Goal
-Assemble and verify the final contest submission package, guaranteeing 100% bidirectional traceability between official MGIMO AI Challenge 2026 requirements and repository artifacts.
+## Цель (Goal)
+Сформировать и верифицировать финальный пакет материалов для подачи заявки через личный кабинет, обеспечив 100% взаимную трассируемость требований конкурса и артефактов репозитория.
 
-## Problem
-Even high-performing technical agents lose scoring points if jury members cannot quickly verify where each contest criterion is implemented or encounter broken links and confusing setup steps.
+## Проблема (Problem)
+Даже сильные технические решения теряют баллы, если эксперты конкурса не могут быстро найти подтверждение реализации каждого пункта ТЗ или сталкиваются со сложной и непроверенной инструкцией по установке.
 
-## Scope
-- **MUST**:
-  - `README.md`: First-run guide, 5-minute quickstart, architecture diagram, CLI usage, academic references, solo-maker credentials.
-  - `docs/specs/TRACEABILITY.md`: Bidirectional matrix mapping all mandatory minimum and bonus-level requirements to implementing tickets and files.
-  - `docs/SUBMISSION.md`: Pre-submission checklist covering Git repository, video, and PDF documentation requirements.
-  - Verification that all sensitive credentials remain excluded from Git history.
-- **SHOULD**:
-  - PDF report generator outline based on `docs/CONTEXT.md` and `docs/ARCHITECTURE.md`.
-- **COULD**:
-  - CI/CD workflow for automated citation and cost checks.
+## Границы скоупа (Scope)
+- **MUST (Обязательно)**:
+  - `README.md`: руководство первого запуска, быстрый старт за 5 минут, архитектура, CLI, ссылки на научные статьи, авторство Захара.
+  - `docs/specs/TRACEABILITY.md`: матрица сопоставления обязательных и бонусных требований с тикетами и файлами проекта.
+  - `docs/SUBMISSION.md`: чек-лист готовности репозитория, видео и описания.
+  - Проверка отсутствия секретов и ключей в истории коммитов Git.
+- **SHOULD (Желательно)**:
+  - Структура и разделы для итогового PDF-описания проекта.
+- **COULD (Возможно)**:
+  - Автоматизированный workflow для CI-проверки ссылок и затрат.
 
-## Requirements
-1. `TRACEABILITY.md` must cover 100% of the contest criteria: Strategy depth, Neurotech scale, Implementation quality, and Economic efficiency.
-2. `README.md` must enable an evaluator to clone and run the project within 5 minutes using pure Python 3.11+.
-3. Ground-truth competition texts in `docs/source/` (`task_ru.md`, `demo_brief_ru.md`) must be present and verified.
+## Требования (Requirements)
+1. Документ `TRACEABILITY.md` обязан покрывать все 4 критерия оценки конкурса: Глубина стратегии, Масштаб нейротеха, Качество реализации, Экономичность.
+2. Инструкция в `README.md` обязана запускаться на стандартном Python 3.11+ менее чем за 5 минут.
+3. Исходные файлы задания в `docs/source/` (`task_ru.md`, `demo_brief_ru.md`) обязаны быть на месте и оставаться неизменными.
 
-## Implementation Notes
-- Primary documentation files reside in repository root and `docs/`.
-- Traceability matrix lives in `docs/specs/TRACEABILITY.md`.
+## Заметки по реализации (Implementation Notes)
+- Документация размещается в корне и в папке `docs/`.
+- Матрица соответствия хранится в `docs/specs/TRACEABILITY.md`.
 
-## Acceptance Criteria ("Done when")
-- `docs/specs/TRACEABILITY.md` maps every competition requirement to at least one ticket.
-- `README.md` contains verified quickstart instructions that execute cleanly.
-- `docs/SUBMISSION.md` checklist is complete.
+## Критерии приемки ("Done when")
+- `docs/specs/TRACEABILITY.md` связывает каждое требование конкурса минимум с одним тикетом.
+- Команды быстрого старта из `README.md` выполняются без ошибок.
+- Чек-лист в `docs/SUBMISSION.md` полностью закрыт.
 
-## References
-- https://code.claude.com/docs/en/best-practices — Documentation and verification standards for agentic repositories.
-- https://agentskills.io — Standard documentation structure for cross-agent repositories.
+## Источники и литература (References)
+- https://code.claude.com/docs/en/best-practices — Стандарты верификации и оформления агентских репозиториев.
+- https://agentskills.io — Структура документации для кросс-агентных проектов.
 
-## Dependencies
-All prior tickets (TICKET-01 through TICKET-10).
+## Зависимости (Dependencies)
+Все предыдущие тикеты (TICKET-01 — TICKET-10).
 
-## Effort & Risks
-- **Effort**: 1.5 person-hours (MUST scope).
-- **Risk**: Missing a contest requirement in the submission package. *Mitigation*: Exhaustive verification against the official competition brief in `docs/source/task_ru.md`.
+## Трудоемкость и риски (Effort & Risks)
+- **Трудоемкость**: 1.5 человеко-часа (MUST-скоуп).
+- **Риск**: Пропуск малозаметного требования конкурса. *Митигация*: Сверка с официальным текстом задания в `docs/source/task_ru.md`.

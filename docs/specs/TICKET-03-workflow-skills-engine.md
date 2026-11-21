@@ -1,53 +1,53 @@
-# TICKET-03: 6-Phase Strategic Workflow & Skills Engine
+# TICKET-03: 6-фазный стратегический воркфлоу и движок навыков
 
-## Goal
-Implement a modular suite of 11 agent skills that guide a product manager from a vague initial idea to an empirically justified strategy with human-in-the-loop checkpoints.
+## Цель (Goal)
+Реализовать модульный набор из 11 агентских навыков, проводящих продакт-лидера от нечеткого запроса к доказанной стратегии через контрольные точки с участием человека.
 
-## Problem
-Unstructured LLM prompts produce superficial, ungrounded advice, skip stakeholder alignment gates, and fail to generate viable negative options like project shutdown.
+## Проблема (Problem)
+Неструктурированные промпты генерируют поверхностные шаблонные рекомендации, пропускают согласование с лидером продукта и не способны предложить негативные развилки (например, закрытие направления).
 
-## Scope
-- **MUST**:
-  - Create 11 specialized skills in `.agents/skills/*/SKILL.md`:
-    1. `strategist`: Intake loop (clarification budget: $\le 2$ questions/step).
-    2. `research-planner`: Decision-relevant inquiry planning.
-    3. `evidence-collector`: Gathering findings with YAML frontmatter.
-    4. `citation-verifier`: Interface to deterministic link checker.
-    5. `options-generator`: Mandatory triad (Status Quo, Shutdown, Value Leap).
-    6. `adversarial-reviewer`: Red-Team review prompt formulation.
-    7. `interview-panel`: Qualitative persona simulation with honesty disclaimers.
-    8. `strategy-writer`: Production of Product Strategy, Comms Strategy, Validation Plan.
-    9. `decision-journal`: Formal logging of ratified decisions.
-    10. `revision-scanner`: Impact detection upon arrival of fresh market data.
-    11. `session-resume`: Context bootstrap in fresh IDE chat windows.
-- **SHOULD**:
-  - YAML frontmatter with `name` and `description` for all skills conforming to Anthropic standard.
-- **COULD**:
-  - Interactive skill creator utility.
+## Границы скоупа (Scope)
+- **MUST (Обязательно)**:
+  - Создание 11 специализированных навыков в `.agents/skills/*/SKILL.md`:
+    1. `strategist`: оркестратор и цикл уточнения (бюджет: $\le 2$ вопросов за шаг).
+    2. `research-planner`: декомпозиция цели в дерево вопросов для принятия решений.
+    3. `evidence-collector`: сбор фактов с метаданными YAML frontmatter.
+    4. `citation-verifier`: запуск детерминированного валидатора ссылок.
+    5. `options-generator`: обязательная триада вариантов (Status Quo, Shutdown, Leap).
+    6. `adversarial-reviewer`: формирование Red-Team промптов для жесткого рецензирования.
+    7. `interview-panel`: симуляция качественных персон с честным дисклеймером.
+    8. `strategy-writer`: генерация продуктовой и коммуникационной стратегий, плана валидации.
+    9. `decision-journal`: протоколирование утвержденных решений.
+    10. `revision-scanner`: анализ влияния новых рыночных данных на стратегию.
+    11. `session-resume`: быстрое восстановление контекста в чистом окне чата.
+- **SHOULD (Желательно)**:
+  - Шапка YAML frontmatter с полями `name` и `description` для каждого навыка по стандарту Anthropic.
+- **COULD (Возможно)**:
+  - Интерактивный генератор новых навыков на Python.
 
-## Requirements
-1. Intake clarification in `strategist` must enforce a strict budget of at most 1–2 questions per turn.
-2. `options-generator` must always produce at least 3 distinct options, including "Keep as is" and "Shut down direction", each equipped with steelman counterarguments.
-3. Conversational copy directed to the user must follow the Russian `sasha` communication standard.
-4. Internal skill instructions must remain in English.
+## Требования (Requirements)
+1. Навык `strategist` обязан строго соблюдать лимит: не более 1–2 вопросов за один диалоговый шаг.
+2. Навык `options-generator` обязан всегда формировать минимум 3 варианта, включая «Оставить как есть» и «Закрыть направление», с сильными контраргументами к каждому.
+3. Все коммуникационные сообщения пользователю должны соответствовать стандарту живой русской речи `sasha`.
+4. Внутренние инструкции навыков формулируются на английском языке для точности рассуждений.
 
-## Implementation Notes
-- Folder structure follows Anthropic / AgentSkills.io convention (`.agents/skills/<name>/SKILL.md`).
-- Step-by-step Mermaid sequence diagrams included in primary skills.
+## Заметки по реализации (Implementation Notes)
+- Структура каталогов соответствует спецификации AgentSkills.io (`.agents/skills/<name>/SKILL.md`).
+- В ключевые навыки встроены пошаговые Mermaid-диаграммы потока управления.
 
-## Acceptance Criteria ("Done when")
-- Exactly 11 `SKILL.md` files exist across `.agents/skills/`.
-- Each `SKILL.md` starts with valid YAML frontmatter containing `name` and `description`.
-- Running an intake query triggers the $\le 2$ question clarification gate.
+## Критерии приемки ("Done when")
+- В папке `.agents/skills/` созданы ровно 11 файлов `SKILL.md`.
+- Каждый `SKILL.md` содержит валидный блок YAML с `name` и `description`.
+- При подаче сырого запроса агент задает не более 2 фокусных уточняющих вопросов.
 
-## References
-- https://github.com/anthropics/skills — Official Anthropic Agent Skills specification and folder format.
-- https://agentskills.io — Cross-agent skills interoperability standard.
-- https://github.com/travisvn/awesome-claude-skills — Curated skills patterns and structures.
+## Источники и литература (References)
+- https://github.com/anthropics/skills — Официальная спецификация навыков Anthropic и формат папок.
+- https://agentskills.io — Межагентный открытый стандарт спецификации навыков.
+- https://github.com/travisvn/awesome-claude-skills — Кураторская коллекция шаблонов и паттернов навыков.
 
-## Dependencies
+## Зависимости (Dependencies)
 TICKET-01, TICKET-02.
 
-## Effort & Risks
-- **Effort**: 2.5 person-hours (MUST scope).
-- **Risk**: Verbose skill runbooks exceeding context limits. *Mitigation*: Concise instructions with explicit state pointers.
+## Трудоемкость и риски (Effort & Risks)
+- **Трудоемкость**: 2.5 человеко-часа (MUST-скоуп).
+- **Риск**: Избыточная многословность инструкций навыков. *Митигация*: Лаконичные чек-листы с опорой на файлы состояния.

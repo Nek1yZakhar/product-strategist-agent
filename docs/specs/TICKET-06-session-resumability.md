@@ -1,41 +1,41 @@
-# TICKET-06: Session State & Manus-Style Resumability
+# TICKET-06: Возобновляемость сессии в стиле Manus на базе файлов состояния
 
-## Goal
-Enable uninterrupted strategic continuity across chat restarts and developer sessions through deterministic, file-based task state checkpoints.
+## Цель (Goal)
+Обеспечить бесшовное продолжение стратегической работы после закрытия чата или перезапуска среды разработки через детерминированные контрольные точки состояния.
 
-## Problem
-In conversational LLM interfaces, closing a chat window wipes working memory. Product leads cannot conduct multi-day strategic cycles without painstakingly re-explaining context.
+## Проблема (Problem)
+В стандартных диалоговых интерфейсах закрытие окна стирает оперативную память модели. Лидер продукта не может вести многодневный проект без необходимости заново пересказывать контекст на каждом шаге.
 
-## Scope
-- **MUST**:
-  - `state/STATE-current-task.md`: Living checkpoint capturing active project, phase, open questions, completed steps, next action, and session resume pointer.
-  - `skill:session-resume`: Context bootstrap protocol reading state files upon cold boot in a new chat.
-  - Deterministic state schema requiring $<1$ second to parse by an incoming agent session.
-- **SHOULD**:
-  - Session replay pointer mapping to `demo/session_transcript.jsonl`.
-- **COULD**:
-  - Automatic git commit on state transition.
+## Границы скоупа (Scope)
+- **MUST (Обязательно)**:
+  - `state/STATE-current-task.md`: живой чекпоинт с указанием активного проекта, текущей фазы, открытых вопросов, завершенных шагов, следующего действия и указателя возобновления.
+  - Навык `skill:session-resume`: протокол быстрого старта, считывающий файлы состояния при первом сообщении в новом окне чата.
+  - Компактный формат состояния, считываемый моделью менее чем за 1 секунду.
+- **SHOULD (Желательно)**:
+  - Указатель на лог сессии `demo/session_transcript.jsonl`.
+- **COULD (Возможно)**:
+  - Автоматический коммит в Git при каждой смене фазы задачи.
 
-## Requirements
-1. An agent opening a fresh chat window must be able to restore full situational awareness by reading only `state/STATE-current-task.md` and `docs/STATE.md`.
-2. State file must be updated at the conclusion of every analytical phase.
-3. Cold-boot status message must be emitted in concise, professional Russian (`sasha` standard).
+## Требования (Requirements)
+1. Агент, запущенный в абсолютно чистом окне чата, обязан восстанавливать полную ситуационную осведомленность, прочитав только `state/STATE-current-task.md` и `docs/STATE.md`.
+2. Файл состояния обязан обновляться по завершении каждой аналитической фазы.
+3. Сообщение о восстановлении контекста выводится на чистом русском языке по стандарту `sasha`.
 
-## Implementation Notes
-- Architecture inspired by Manus file-based state management and Claude Code task persistence.
-- State files reside in `state/`.
+## Заметки по реализации (Implementation Notes)
+- Архитектура опирается на принципы Manus (файловый стейт) и дисциплину задач Claude Code.
+- Файлы состояния хранятся в папке `state/`.
 
-## Acceptance Criteria ("Done when")
-- `state/STATE-current-task.md` exists and contains valid task metadata.
-- Opening a fresh chat and prompting *"Continue project"* triggers `skill:session-resume` and accurately identifies the current task state.
+## Критерии приемки ("Done when")
+- Файл `state/STATE-current-task.md` существует и содержит валидные метаданные активной фазы.
+- При вводе в новом чате фразы «Продолжаем работу» активируется `skill:session-resume` и корректно формулируется статус проекта.
 
-## References
-- https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus — Core reference for file-based state and KV-cache optimization.
-- https://gist.github.com/renschni/4fbc70b31bad8dd57f3370239dccd58f — Manus state teardown and agent planning loop.
+## Источники и литература (References)
+- https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus — Базовый источник по контекстному инжинирингу и оптимизации KV-кэша.
+- https://gist.github.com/renschni/4fbc70b31bad8dd57f3370239dccd58f — Разбор цикла планирования и управления памятью в Manus.
 
-## Dependencies
+## Зависимости (Dependencies)
 TICKET-01, TICKET-03.
 
-## Effort & Risks
-- **Effort**: 1.5 person-hours (MUST scope).
-- **Risk**: State file becoming stale due to missed updates. *Mitigation*: Rule `.agents/rules/workflow.md` enforces updating state before ending turns.
+## Трудоемкость и риски (Effort & Risks)
+- **Трудоемкость**: 1.5 человеко-часа (MUST-скоуп).
+- **Риск**: Рассинхронизация стейта при пропуске обновлений. *Митигация*: Правило `.agents/rules/workflow.md` запрещает завершать ход без фиксации состояния.

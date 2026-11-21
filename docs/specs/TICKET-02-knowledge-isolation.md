@@ -1,48 +1,48 @@
-# TICKET-02: 4-Layer Knowledge Isolation & Methodology Standards
+# TICKET-02: 4-слойная изоляция знаний и стандарты методологии
 
-## Goal
-Enforce strict separation between permanent instructions, strategic methodology, project-specific materials, and runtime state to prevent cognitive cross-contamination.
+## Цель (Goal)
+Обеспечить строгое разделение постоянных инструкций, стратегической методологии, материалов конкретного проекта и текущего состояния задачи для предотвращения когнитивного смешения контекстов.
 
-## Problem
-Standard conversational agents overwrite methodology with project data or lose track of foundational rules during long sessions, causing context drift and unpredictable outputs.
+## Проблема (Problem)
+Обычные диалоговые ассистенты перезаписывают общую методологию данными текущего проекта либо теряют базовые правила во время длинных диалогов, что приводит к дрейфу контекста и нестабильным выводам.
 
-## Scope
-- **MUST**:
-  - Form directory tree: `knowledge/methodology/` and `knowledge/projects/`.
-  - `knowledge/methodology/evidence-standards.md` detailing the Fact vs Hypothesis vs Assumption taxonomy.
-  - `knowledge/methodology/strategy-frameworks.md` standardizing Product Strategy, Communication Strategy, and Options Triad.
-  - `knowledge/methodology/synthetic-respondents.md` defining strict guardrails for synthetic personas.
-  - Strategy templates in `knowledge/methodology/templates/` (`product-strategy.md`, `communication-strategy.md`, `validation-plan.md`).
-  - Red-Team prompt template in `knowledge/methodology/red-team/adversarial-review-prompt.md`.
-- **SHOULD**:
-  - Retraction notice schema for superseded findings.
-- **COULD**:
-  - Automated linter for markdown templates.
+## Границы скоупа (Scope)
+- **MUST (Обязательно)**:
+  - Дерево каталогов: `knowledge/methodology/` и `knowledge/projects/`.
+  - `knowledge/methodology/evidence-standards.md` с описанием таксономии «Факт — Гипотеза — Допущение».
+  - `knowledge/methodology/strategy-frameworks.md`, стандартизирующий Продуктовую стратегию, Коммуникационную стратегию и Триаду вариантов.
+  - `knowledge/methodology/synthetic-respondents.md`, задающий жесткие ограничения на использование синтетических персон.
+  - Шаблоны документов в `knowledge/methodology/templates/` (`product-strategy.md`, `communication-strategy.md`, `validation-plan.md`).
+  - Шаблон Red-Team промпта в `knowledge/methodology/red-team/adversarial-review-prompt.md`.
+- **SHOULD (Желательно)**:
+  - Регламент явного отзыва (retraction) устаревших находок.
+- **COULD (Возможно)**:
+  - Автоматический линтер корректности заполнения шаблонов.
 
-## Requirements
-1. Permanent instructions must never be written into `knowledge/projects/`.
-2. All empirical claims must follow the YAML frontmatter schema (`claim`, `source_url`, `verified`, `confidence`, `date_checked`).
-3. Synthetic respondents must be strictly labeled as qualitative hypothesis generation (arXiv:2607.26348).
-4. Raw competition source texts in `docs/source/` must remain immutable.
+## Требования (Requirements)
+1. Постоянные системные инструкции ни при каких условиях не должны записываться в `knowledge/projects/`.
+2. Все фактологические утверждения обязаны оформляться по схеме YAML frontmatter (`claim`, `source_url`, `verified`, `confidence`, `date_checked`).
+3. Синтетические респонденты обязаны маркироваться строго как инструмент качественной генерации гипотез (arXiv:2607.26348).
+4. Исходные файлы задания в `docs/source/` являются неизменяемым Ground Truth.
 
-## Implementation Notes
-- Methodology files reside in `knowledge/methodology/`.
-- Project instances reside in `knowledge/projects/<project-name>/`.
-- Template schemas provide plug-and-play structure for `strategy-writer` skill.
+## Заметки по реализации (Implementation Notes)
+- Файлы методологии размещаются в `knowledge/methodology/`.
+- Экземпляры проектов изолируются в `knowledge/projects/<project-name>/`.
+- Шаблоны обеспечивают готовую структуру для навыка `strategy-writer`.
 
-## Acceptance Criteria ("Done when")
-- All files in `knowledge/methodology/` exist and contain verified template structures.
-- Running regex check on `knowledge/methodology/evidence-standards.md` confirms presence of arXiv:2504.00317, arXiv:2608.24306, and arXiv:2607.26348.
-- Templates in `knowledge/methodology/templates/` can be rendered without syntax errors.
+## Критерии приемки ("Done when")
+- Все файлы в `knowledge/methodology/` существуют и содержат проверенные шаблоны.
+- Проверка текста `evidence-standards.md` подтверждает наличие ссылок на arXiv:2504.00317, arXiv:2608.24306 и arXiv:2607.26348.
+- Шаблоны в `templates/` корректно отображаются без синтаксических ошибок разметки.
 
-## References
-- https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus — File-based knowledge and context engineering.
-- https://gist.github.com/renschni/4fbc70b31bad8dd57f3370239dccd58f — Manus architecture teardown: memory management and knowledge retrieval.
-- https://arxiv.org/abs/2607.26348 — "When Synthetic Users Fail": grounding for synthetic respondent honesty standard.
+## Источники и литература (References)
+- https://manus.im/blog/Context-Engineering-for-AI-Agents-Lessons-from-Building-Manus — Организация знаний и контекстный инжиниринг на базе файлов.
+- https://gist.github.com/renschni/4fbc70b31bad8dd57f3370239dccd58f — Архитектурный разбор Manus: управление памятью и извлечение знаний.
+- https://arxiv.org/abs/2607.26348 — «When Synthetic Users Fail»: обоснование стандарта честности синтетических респондентов.
 
-## Dependencies
-TICKET-01 (Repository Scaffolding).
+## Зависимости (Dependencies)
+TICKET-01 (Базовый каркас).
 
-## Effort & Risks
-- **Effort**: 2.0 person-hours (MUST scope).
-- **Risk**: Over-complicating template headers. *Mitigation*: Use standard GFM markdown with minimal YAML blocks.
+## Трудоемкость и риски (Effort & Risks)
+- **Трудоемкость**: 2.0 человеко-часа (MUST-скоуп).
+- **Риск**: Избыточное усложнение заголовков шаблонов. *Митигация*: Использование стандартного Markdown с компактными YAML-блоками.

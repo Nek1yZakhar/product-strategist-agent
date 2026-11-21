@@ -1,45 +1,45 @@
-# TICKET-09: Model Routing, Pro Subscriptions & Dual-Provider Red-Team Architecture
+# TICKET-09: Маршрутизация моделей, Pro-подписки и Red-Team в Zcode
 
-## Goal
-Implement a multi-model cognitive topology that leverages active IDE Pro subscriptions for zero-token-billing execution and independent red-team critique via GLM 5.3 in Zcode.
+## Цель (Goal)
+Реализовать многомодельную топологию анализа, использующую активные Pro-подписки в IDE для работы без затрат на токены API и независимого критика GLM 5.3 в Zcode.
 
-## Problem
-Single-model systems suffer from severe confirmation bias, validating their own assumptions. Furthermore, reliance on developer API keys creates credit card billing friction, whereas professional makers operate via flat-rate Pro subscriptions in specialized IDEs.
+## Проблема (Problem)
+Одномодельные решения страдают подтверждающим искажением (модель склонна соглашаться со своими же гипотезами). Кроме того, зависимость от платных API-ключей создает барьер привязки карт, тогда как продакты уже работают по Pro-подпискам в IDE.
 
-## Scope
-- **MUST**:
-  - Architecture specification in `docs/ARCHITECTURE.md` detailing IDE Pro subscription access (AntiGravity IDE for Gemini Flash; Zcode for GLM 5.3; Perplexity Pro web panel for research).
-  - Red-Team review prompt in `knowledge/methodology/red-team/adversarial-review-prompt.md`.
-  - Operational skill `.agents/skills/adversarial-reviewer/SKILL.md`.
-  - Financial token ledger in `state/cost-log.csv` and summary reporter `scripts/cost_summary.py` tracking token economy for contest transparency.
-  - Optional Free-Tier Google AI Studio API key support in `.env.example` for headless CLI scripts.
-- **SHOULD**:
-  - File-based review request format (`red-team-review-request.md`) for air-gapped Zcode sessions.
-- **COULD**:
-  - Direct API client fallback for GLM 5.3 via Zhipu AI platform if key is provided.
+## Границы скоупа (Scope)
+- **MUST (Обязательно)**:
+  - Спецификация в `docs/ARCHITECTURE.md` с описанием доступа через подписки: AntiGravity IDE (Gemini Flash), Zcode (GLM 5.3), Perplexity Pro (веб-панель).
+  - Шаблон промпта Red-Team в `knowledge/methodology/red-team/adversarial-review-prompt.md`.
+  - Операционный навык `.agents/skills/adversarial-reviewer/SKILL.md`.
+  - Финансовый журнал в `state/cost-log.csv` и скрипт `scripts/cost_summary.py` для прозрачности затрат перед жюри.
+  - Поддержка опционального бесплатного ключа Google AI Studio Free-Tier в `.env.example` для консольных скриптов.
+- **SHOULD (Желательно)**:
+  - Файловый формат запроса рецензирования (`red-team-review-request.md`) для изолированных сессий в Zcode.
+- **COULD (Возможно)**:
+  - Прямой вызов API Zhipu AI при наличии ключа в `.env`.
 
-## Requirements
-1. Red-Team review must be conducted by an independent model family (GLM 5.3 via Zcode) to prevent cognitive echo.
-2. The agent must never mandate paid API billing when IDE subscription sessions are active.
-3. Every analytical session must log token consumption in `state/cost-log.csv` regardless of whether inference was executed under a subscription or an API key.
+## Требования (Requirements)
+1. Рецензирование обязано выполняться независимым семейством моделей (GLM 5.3 через Zcode) для исключения когнитивного эха.
+2. Агент не должен требовать платных API-ключей, если пользователь работает в активной сессии IDE.
+3. Каждая аналитическая операция обязана фиксироваться в `state/cost-log.csv` с расчетом эквивалентной стоимости.
 
-## Implementation Notes
-- Gemini 3.8 Flash provides fast, low-latency orchestration (~1M token context).
-- GLM 5.3 acts as a hostile CFO and Principal Product Reviewer.
-- Perplexity Pro serves as a second-opinion verification panel.
+## Заметки по реализации (Implementation Notes)
+- Gemini 3.8 Flash обеспечивает быстрое оркестрирование с контекстом до 1M токенов.
+- GLM 5.3 выступает в роли скептичного финансового директора и старшего продакта.
+- Perplexity Pro служит инструментом перекрестной проверки рыночных данных.
 
-## Acceptance Criteria ("Done when")
-- `docs/ARCHITECTURE.md` documents the Pro-subscription allocation matrix.
-- `knowledge/projects/demo-megafon/output/adversarial-review.md` contains an unsparing red-team critique from GLM 5.3.
-- Running `python scripts/cost_summary.py` outputs token and cost breakdowns across models.
+## Критерии приемки ("Done when")
+- В `docs/ARCHITECTURE.md` зафиксирована матрица распределения подписок.
+- Файл `output/adversarial-review.md` содержит детальный отчет с критикой юнит-экономики от GLM 5.3.
+- Запуск `python scripts/cost_summary.py` корректно выводит разбивку по моделям и фазам.
 
-## References
-- https://code.claude.com/docs/en/best-practices — Model and subagent allocation best practices.
-- https://github.com/dzhng/deep-research — Multi-stage research and review pattern.
+## Источники и литература (References)
+- https://code.claude.com/docs/en/best-practices — Лучшие практики распределения задач между субагентами и моделями.
+- https://github.com/dzhng/deep-research — Паттерн многоэтапного исследования и независимого аудита.
 
-## Dependencies
+## Зависимости (Dependencies)
 TICKET-01, TICKET-03, TICKET-04.
 
-## Effort & Risks
-- **Effort**: 2.0 person-hours (MUST scope).
-- **Risk**: Red-Team review producing overly generic criticism. *Mitigation*: Prompt enforces explicit mathematical critique of unit economics and IoT margin leakage.
+## Трудоемкость и риски (Effort & Risks)
+- **Трудоемкость**: 2.0 человеко-часа (MUST-скоуп).
+- **Риск**: Слишком поверхностная критика от Red-Team. *Митигация*: Промпт требует обязательного математического разбора юнит-экономики и скрытых затрат на IoT.

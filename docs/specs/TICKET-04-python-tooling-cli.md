@@ -1,44 +1,44 @@
-# TICKET-04: Deterministic Python Tooling & CLI Utilities
+# TICKET-04: Детерминированные утилиты и CLI-скрипты на чистом Python
 
-## Goal
-Provide zero-dependency, pure Python 3.11+ standard library CLI tools for brief extraction, URL citation verification, and token cost accounting.
+## Цель (Goal)
+Предоставить легковесные CLI-утилиты на стандартной библиотеке Python 3.11+ без сторонних зависимостей для извлечения брифов, проверки ссылок и финансового учета токенов.
 
-## Problem
-Relying on LLMs for deterministic tasks (checking HTTP status codes, parsing CSV ledgers, extracting PDF text) leads to hallucinations, hidden costs, and unrepeatable results.
+## Проблема (Problem)
+Делегирование детерминированных задач нейросети (проверка HTTP-статусов, парсинг CSV-таблиц, извлечение текста из PDF) порождает галлюцинации, ведет к перерасходу токенов и дает невоспроизводимые результаты.
 
-## Scope
-- **MUST**:
-  - `scripts/verify_citations.py`: Resolves URLs via HTTP HEAD/GET, detects dead/hallucinated links, audits YAML frontmatter in `findings/*.md`, supports `--update`.
-  - `scripts/extract_brief.py`: Normalizes PDF/text briefs into `knowledge/projects/<project>/brief.md`.
-  - `scripts/cost_summary.py`: Aggregates `state/cost-log.csv` into markdown tables with USD and RUB totals.
-  - Zero non-standard dependencies (runs on pure Python 3.11+ stdlib; optional `pypdf` for binary PDF extraction).
-- **SHOULD**:
-  - Robust error handling for network timeouts and SSL certificate validation.
-- **COULD**:
-  - Parallel asynchronous HTTP checks for bulk URL lists (>50 links).
+## Границы скоупа (Scope)
+- **MUST (Обязательно)**:
+  - `scripts/verify_citations.py`: проверка ссылок через HTTP HEAD/GET, обнаружение битых/вымышленных URL, обновление метаданных в `findings/*.md`, флаг `--update`.
+  - `scripts/extract_brief.py`: нормализация текста и PDF-брифов в `knowledge/projects/<project>/brief.md`.
+  - `scripts/cost_summary.py`: расчет расходов из `state/cost-log.csv` с генерацией Markdown-таблицы в USD и RUB.
+  - Нулевые внешние зависимости: работа строго на стандартной библиотеке Python 3.11+ (опционально `pypdf` для бинарных PDF).
+- **SHOULD (Желательно)**:
+  - Устойчивая обработка сетевых таймаутов и нестандартных SSL-сертификатов.
+- **COULD (Возможно)**:
+  - Асинхронная параллельная проверка списков URL (>50 ссылок).
 
-## Requirements
-1. `scripts/verify_citations.py` must handle HTTP redirects, timeouts, and anti-bot WAF responses gracefully.
-2. `scripts/cost_summary.py` must calculate metrics grouped by analytical phase and by model engine.
-3. All scripts must compile cleanly with `python -m py_compile`.
-4. All CLI tools must provide `--help` flags with usage instructions.
+## Требования (Requirements)
+1. Скрипт `verify_citations.py` обязан корректно обрабатывать редиректы, таймауты и ответы WAF/Cloudflare (HTTP 403).
+2. Скрипт `cost_summary.py` обязан агрегировать статистику в разрезе фаз анализа и используемых моделей.
+3. Все скрипты обязаны компилироваться без ошибок (`python -m py_compile`).
+4. Все утилиты обязаны поддерживать флаг `--help` со справкой по аргументам.
 
-## Implementation Notes
-- Uses `urllib.request`, `ssl`, `csv`, `re`, `argparse`, `pathlib`.
-- Fixed currency anchor: $1 USD = 95.00 RUB.
+## Заметки по реализации (Implementation Notes)
+- Модули: `urllib.request`, `ssl`, `csv`, `re`, `argparse`, `pathlib`.
+- Фиксированный курс валюты: 1 USD = 95.00 RUB.
 
-## Acceptance Criteria ("Done when")
-- `python -m py_compile scripts/*.py` exits with code 0.
-- `python scripts/verify_citations.py --help` outputs valid options.
-- `python scripts/cost_summary.py` parses `state/cost-log.csv` and outputs formatted markdown tables.
+## Критерии приемки ("Done when")
+- Команда `python -m py_compile scripts/*.py` завершается с кодом 0.
+- `python scripts/verify_citations.py --help` выводит список доступных параметров.
+- `python scripts/cost_summary.py` считывает `state/cost-log.csv` и формирует читаемую таблицу.
 
-## References
-- https://arxiv.org/abs/2607.00738 — "Phantom References": academic motivation for deterministic URL resolution checks.
-- https://github.com/langchain-ai/open_deep_research — Reference pattern for deterministic tool integration in research pipelines.
+## Источники и литература (References)
+- https://arxiv.org/abs/2607.00738 — «Phantom References»: обоснование необходимости детерминированной проверки ссылок.
+- https://github.com/langchain-ai/open_deep_research — Архитектурный паттерн встраивания детерминированных скриптов в исследовательский цикл.
 
-## Dependencies
-TICKET-01 (Repository Structure).
+## Зависимости (Dependencies)
+TICKET-01 (Каркас репозитория).
 
-## Effort & Risks
-- **Effort**: 2.0 person-hours (MUST scope).
-- **Risk**: External sites blocking HEAD requests with HTTP 403. *Mitigation*: Fallback to GET request with streaming cutoff and browser User-Agent header.
+## Трудоемкость и риски (Effort & Risks)
+- **Трудоемкость**: 2.0 человеко-часа (MUST-скоуп).
+- **Риск**: Блокировка HEAD-запросов внешними серверами с кодом 403. *Митигация*: Автоматический фоллбэк на потоковый GET с браузерным заголовком User-Agent.
