@@ -4,6 +4,20 @@
 
 ---
 
+## [Unreleased] - 2026-11-22 (волна 2, планирование)
+
+### Добавлено
+- **QA-аудит готовности к сдаче**: `docs/AUDIT-2026-11-22.md` — 10 дефектов (F-01…F-10) с приоритетами P0–P2 и планом устранения.
+- **Спецификации волны 2** (`docs/specs/`):
+  - `TICKET-12-evidence-hardening-real-links.md` — верифицированный пул реальных глубоких ссылок для замены корневых доменов в 5 находках (dp.ru, ComNews, mts.ru, megafon.ru, tadviser.ru, beelinenow.ru, wciom.ru, habr.com — проверены живыми запросами 2026-11-22) с обязательными переформулировками claim и протоколом понижения confidence.
+  - `TICKET-13-real-session-video.md` — контракт живого прогона и записи видео ≤10 мин (инструменты: OBS, claude-session-replay, es617/claude-replay).
+  - `TICKET-14-repo-hygiene-portability.md` — фикс 14 битых `file:///`-ссылок, починка quickstart (`Пример брифа.pdf`), LICENSE, requirements-pdf.txt, генерация `state/citation-report.md`.
+  - `TICKET-15-pdf-screenshots.md` — 8 обязательных скриншотов реальной сессии в конкурсном PDF.
+  - `TICKET-16-log-honesty.md` — маркировка cost-log (estimated/measured), переименование сценарной заготовки транскрипта, честные формулировки STATE/SUBMISSION.
+- **Реестр волны 2** в `docs/STATE.md` (TICKET-12…16, статус PLANNED) и порядок исполнения: 14 → 12 → 13 → 15 → 16.
+
+---
+
 ## [1.0.0] - 2026-11-22
 
 ### Добавлено

@@ -5,7 +5,9 @@
 - **Конкурс**: MGIMO AI Challenge 2026 (Трек: «Стратег Фабрики продуктов МегаФона»)
 - **Автор**: Захар (Solo Maker)
 - **Дедлайн**: 22 ноября 2026, 23:59 МСК
-- **Статус спринта**: **ВСЕ 11 ТИКЕТОВ РАЗРАБОТАНЫ И ДОКУМЕНТИРОВАНЫ СПЕЦИФИКАЦИЯМИ [DONE]**
+- **Статус спринта**: **ВОЛНА 1 (TICKET-01…11) РАЗРАБОТАНА [DONE]; ВОЛНА 2 (TICKET-12…16) СПЛАНИРОВАНА ПО ИТОГАМ АУДИТА [PLANNED]**
+  - Аудит готовности: [docs/AUDIT-2026-11-22.md](AUDIT-2026-11-22.md) (дефекты F-01…F-10, приоритеты P0–P2)
+  - Порядок исполнения волны 2: TICKET-14 → TICKET-12 → TICKET-13 → TICKET-15 → TICKET-16
 
 ---
 
@@ -24,12 +26,22 @@
 | **TICKET-09** | Маршрутизация Pro-моделей и Red-Team Zcode | **DONE** | Coordinator, Strategist, Red-Team (GLM 5.3), QA | [docs/specs/TICKET-09-model-routing-redteam.md](file:///c:/Users/Admin/Desktop/product-strategist-agent/docs/specs/TICKET-09-model-routing-redteam.md) |
 | **TICKET-10** | Запись сессий и 10-минутный видеосценарий | **DONE** | Coordinator, Director, Operator, QA | [docs/specs/TICKET-10-session-replay-video.md](file:///c:/Users/Admin/Desktop/product-strategist-agent/docs/specs/TICKET-10-session-replay-video.md) |
 | **TICKET-11** | Конкурсный пакет и матрица трассируемости | **DONE** | Coordinator, Compliance Audit, Packager, QA | [docs/specs/TICKET-11-submission-pack-traceability.md](file:///c:/Users/Admin/Desktop/product-strategist-agent/docs/specs/TICKET-11-submission-pack-traceability.md) |
+| **TICKET-12** | Укрепление доказательной базы: реальные глубокие ссылки (P0) | **PLANNED** | Coordinator, Evidence Agent, Verification Agent, QA | [docs/specs/TICKET-12-evidence-hardening-real-links.md](specs/TICKET-12-evidence-hardening-real-links.md) |
+| **TICKET-13** | Реальная сквозная сессия агента и запись видео ≤10 мин (P0) | **PLANNED** | Coordinator, Оператор записи, QA | [docs/specs/TICKET-13-real-session-video.md](specs/TICKET-13-real-session-video.md) |
+| **TICKET-14** | Гигиена репозитория и переносимость (P1) | **PLANNED** | Coordinator, Tooling Eng, QA | [docs/specs/TICKET-14-repo-hygiene-portability.md](specs/TICKET-14-repo-hygiene-portability.md) |
+| **TICKET-15** | Скриншоты реальной сессии в конкурсном PDF (P1) | **PLANNED** | Coordinator, Packager, QA | [docs/specs/TICKET-15-pdf-screenshots.md](specs/TICKET-15-pdf-screenshots.md) |
+| **TICKET-16** | Честность логов и формулировок (P2) | **PLANNED** | Coordinator, QA Auditor | [docs/specs/TICKET-16-log-honesty.md](specs/TICKET-16-log-honesty.md) |
 
 Полная матрица соответствия требованиям конкурса представлена в [docs/specs/TRACEABILITY.md](file:///c:/Users/Admin/Desktop/product-strategist-agent/docs/specs/TRACEABILITY.md).
 
 ---
 
 ## Журнал завершенных этапов
+
+### [PLANNED] Аудит готовности и волна 2: TICKET-12…16
+- **Результат**: Внешний QA-аудит коммита `53d9d13` выявил 10 дефектов (2×P0: отсутствие видео и непроверяемые корневые ссылки в находках; 4×P1: битые `file:///`-ссылки, падающий quickstart, фантомный citation-report, PDF без скриншотов; 4×P2: синтетический вид cost-log, ложное «100% active», отсутствие LICENSE, приватность репо). Созданы 5 спецификаций волны 2 с верифицированным пулом реальных источников (dp.ru, ComNews, mts.ru, megafon.ru, tadviser.ru, habr.com, wciom.ru — все проверены живыми запросами 2026-11-22), аудит-отчёт и порядок исполнения. Исполнение не начиналось.
+- **Дата**: 22 ноября 2026 г.
+- **Автор**: Захар (планирование: Perplexity Computer)
 
 ### [DONE] Сквозная калибровка нулевого уровня (Step 0) под первоисточник «Пример брифа.pdf»
 - **Результат**: Проведена полная нормализация 11-страничного официального брифа МегаФона («Пример брифа.pdf»). Перекалиброваны артефакты демо-кейса (`knowledge/projects/demo-megafon/`), юнит-экономика ($275 \to 279 \to 285$ млн ₽, 12 000 дополнительных оплаченных месяцев по 500 ₽ при лимите 3 чел.-мес. разработки в Q2), матрица 4 опций (включая Status Quo и Shutdown), журнал решений `DEC-2026-MF-01`, спецификации тикетов и 40-балльная матрица оценки в `TRACEABILITY.md`. Все 11 тикетов успешно валидированы в живом мультиагентном прогоне `teamwork_runner.py`.
