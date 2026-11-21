@@ -107,14 +107,19 @@ SPRINT_REGISTRY: Dict[str, TicketTask] = {
         phase=3,
         roles=[AgentRole.COORDINATOR, AgentRole.RESEARCHER, AgentRole.IMPLEMENTER, AgentRole.RED_TEAM, AgentRole.QA_VERIFIER],
         dependencies=["TICKET-02", "TICKET-03", "TICKET-04"],
-        input_files=["docs/source/demo_brief_ru.md"],
+        input_files=["docs/source/demo_brief_ru.md", "knowledge/projects/demo-megafon/source_brief.txt"],
         output_files=[
             "knowledge/projects/demo-megafon/brief.md",
+            "knowledge/projects/demo-megafon/data/baseline-metrics.md",
+            "knowledge/projects/demo-megafon/output/options.md",
+            "knowledge/projects/demo-megafon/output/adversarial-review.md",
             "knowledge/projects/demo-megafon/output/product-strategy.md",
-            "knowledge/projects/demo-megafon/output/communication-strategy.md"
+            "knowledge/projects/demo-megafon/output/communication-strategy.md",
+            "knowledge/projects/demo-megafon/output/validation-plan.md",
+            "knowledge/projects/demo-megafon/output/ux-journey.md"
         ],
-        verification_cmd="python -c \"import pathlib; assert pathlib.Path('knowledge/projects/demo-megafon/output/product-strategy.md').exists(); print('TICKET-05: OK')\"",
-        description="End-to-end Megafon Family 2.0 demonstration run."
+        verification_cmd="python -c \"import pathlib; assert all(pathlib.Path(p).exists() for p in ['knowledge/projects/demo-megafon/brief.md', 'knowledge/projects/demo-megafon/data/baseline-metrics.md', 'knowledge/projects/demo-megafon/output/options.md', 'knowledge/projects/demo-megafon/output/adversarial-review.md', 'knowledge/projects/demo-megafon/output/product-strategy.md', 'knowledge/projects/demo-megafon/output/communication-strategy.md', 'knowledge/projects/demo-megafon/output/validation-plan.md', 'knowledge/projects/demo-megafon/output/ux-journey.md']); print('TICKET-05: OK')\"",
+        description="End-to-end Megafon Family demonstration run based on 11-page canonical brief."
     ),
     "TICKET-06": TicketTask(
         ticket_id="TICKET-06",
@@ -156,8 +161,8 @@ SPRINT_REGISTRY: Dict[str, TicketTask] = {
         roles=[AgentRole.COORDINATOR, AgentRole.RED_TEAM, AgentRole.QA_VERIFIER],
         dependencies=["TICKET-03", "TICKET-05"],
         input_files=["knowledge/projects/demo-megafon/output/options.md"],
-        output_files=["knowledge/projects/demo-megafon/output/adversarial-review.md"],
-        verification_cmd="python -c \"import pathlib; assert pathlib.Path('knowledge/projects/demo-megafon/output/adversarial-review.md').exists(); print('TICKET-09: OK')\"",
+        output_files=["state/cost-log.csv"],
+        verification_cmd="python -c \"import pathlib; assert pathlib.Path('state/cost-log.csv').exists() and pathlib.Path('knowledge/projects/demo-megafon/output/adversarial-review.md').exists(); print('TICKET-09: OK')\"",
         description="Dual-engine Red-Team stress test on Zcode GLM 5.3."
     ),
     "TICKET-10": TicketTask(

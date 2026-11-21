@@ -48,7 +48,7 @@ Conclude cleanly once cold-start resumption is proven without in-memory dependen
 ## 3. Детерминированные контракты реализации (Implementation Contracts)
 
 ### 3.1. Каноническая схема `state/STATE-current-task.md`
-```markdown
+````markdown
 # Current Task State & Resumption Pointer
 
 ## Task Overview
@@ -71,7 +71,7 @@ Conclude cleanly once cold-start resumption is proven without in-memory dependen
 
 ## Next Action
 <Следующее конкретное действие агента>
-```
+````
 
 ### 3.2. Эталонный формат ответа при возобновлении сессии (`skill:session-resume`)
 > *«Контекст восстановлен: проект `demo-megafon`, фаза финализации стратегии. Решение DEC-2026-MF-01 утверждено. Все артефакты готовы к запуску пилота. Готов продолжить работу.»*
